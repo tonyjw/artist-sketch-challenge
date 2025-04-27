@@ -1,6 +1,11 @@
-// Unsplash API configuration
-let themes = [];
-let currentIndex = 0;
+// API configuration
+const apiUrl = '/api/photos'; // Use server endpoint
+const perPage = 10;
+
+// Initialize variables
+let currentPage = 1;
+let currentImageIndex = 0;
+let images = [];
 let rotationInterval = parseInt(localStorage.getItem('rotationInterval')) || 30; // Load saved interval or use default
 let intervalId = null;
 let progressIntervalId = null;
@@ -8,58 +13,83 @@ let currentImages = [];
 let currentAttributions = [];
 let isPaused = false;
 let successMessageTimeout = null;
-let currentPage = 1;
+let startTime = Date.now();
+let duration = rotationInterval * 1000;
+
+// DOM Elements
+const imageContainer = document.querySelector('.image-container');
+const themeSelect = document.getElementById('theme');
+const progressFill = document.querySelector('.progress-fill');
+const photoAttribution = document.querySelector('.photo-attribution');
+
+let themes = [];
+let currentIndex = 0;
 const MAX_PAGES = 10;
 const IMAGES_PER_PAGE = 10;
 
-// Load themes from JSON file
-async function loadThemes() {
-    try {
-        const response = await fetch('themes.json', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Failed to load themes: ${response.status} ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        if (!data.themes || !Array.isArray(data.themes)) {
-            throw new Error('Invalid themes data format');
-        }
-        
-        themes = data.themes;
-        populateThemeSelect();
-        
-        // Pick a random theme on startup
-        const randomIndex = Math.floor(Math.random() * themes.length);
-        const themeSelect = document.getElementById('theme');
-        themeSelect.value = themes[randomIndex].query;
-        loadImages();
-    } catch (error) {
-        console.error('Error loading themes:', error);
-        // Fallback to default theme if loading fails
-        themes = [{
-            query: 'quaint streets',
-            display: 'Quaint Streets'
-        }];
-        populateThemeSelect();
-        // Use the default theme
-        const themeSelect = document.getElementById('theme');
-        themeSelect.value = themes[0].query;
-        loadImages();
+// Load themes from themes.json
+export async function loadThemes() {
+  try {
+    const response = await fetch('themes.json', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to load themes');
     }
+    
+    const data = await response.json();
+    const themes = data.themes;
+    
+    // Clear existing options
+    themeSelect.innerHTML = '';
+    
+    // Add themes to select
+    themes.forEach(theme => {
+      const option = document.createElement('option');
+      option.value = theme.query;
+      option.textContent = theme.display;
+      themeSelect.appendChild(option);
+    });
+    
+    // Load initial images
+    await loadImages();
+  } catch (error) {
+    console.error('Error loading themes:', error);
+    // Fallback to default theme
+    themeSelect.value = 'quaint streets';
+    await loadImages();
+  }
 }
 
-// Populate theme select options
-function populateThemeSelect() {
-    const themeSelect = document.getElementById('theme');
-    themeSelect.innerHTML = themes.map(theme => 
-        `<option value="${theme.query}">${theme.display}</option>`
-    ).join('');
+// Load images from server API
+export async function loadImages() {
+  try {
+    const query = themeSelect.value;
+    const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${currentPage}`);
+    
+    if (!response.ok) {
+      const error = await response.json();
+      if (error.error === 'API key not configured') {
+        throw new Error('Please configure your Unsplash API key on the server');
+      }
+      throw new Error('Failed to load images');
+    }
+    
+    const data = await response.json();
+    images = data.results;
+    currentImageIndex = 0;
+    
+    if (images.length > 0) {
+      displayImage();
+    }
+  } catch (error) {
+    console.error('Error loading images:', error);
+    showError(error.message);
+  }
 }
 
 // Show success message
@@ -78,12 +108,36 @@ function showSuccessMessage() {
     }, 2000);
 }
 
+// Display the current image
+function displayImage() {
+    // Clear existing images
+    imageContainer.innerHTML = '';
+    
+    // Create and add new images
+    images.forEach((photo, index) => {
+        const img = document.createElement('img');
+        img.src = photo.urls.raw;
+        img.alt = `Gallery image ${index + 1}`;
+        if (index === currentImageIndex) {
+            img.classList.add('active');
+        }
+        imageContainer.appendChild(img);
+    });
+    
+    // Update photo attribution
+    updatePhotoAttribution();
+    
+    // Start rotation if this is the first page
+    if (currentPage === 1) {
+        startRotation();
+    }
+}
+
 // Update photo attribution
 function updatePhotoAttribution() {
-    const attributionElement = document.querySelector('.photo-attribution');
-    if (currentAttributions[currentIndex]) {
-        const { photographer, profileUrl } = currentAttributions[currentIndex];
-        attributionElement.innerHTML = `Photo by <a href="${profileUrl}" target="_blank" rel="noopener noreferrer">${photographer}</a> on <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>`;
+    if (images[currentImageIndex]) {
+        const photo = images[currentImageIndex];
+        photoAttribution.innerHTML = `Photo by <a href="${photo.user.links.html}" target="_blank" rel="noopener noreferrer">${photo.user.name}</a> on <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>`;
     }
 }
 
@@ -153,88 +207,13 @@ async function initGallery() {
         }
     });
 
-    // Load initial images
-    await loadImages();
-}
-
-// Load images from Unsplash API
-async function loadImages(page = 1) {
-    const theme = document.getElementById('theme').value;
-    
-    try {
-        const response = await fetch(`/api/photos?query=${encodeURIComponent(theme)}&per_page=${IMAGES_PER_PAGE}&page=${page}`);
-
-        if (!response.ok) {
-            let errorData;
-            try {
-                errorData = await response.json();
-            } catch (e) {
-                console.error('Error parsing error response:', e);
-                showError('Failed to load images. Please try again later.');
-                return;
-            }
-
-            if (errorData.error === 'API key not configured') {
-                showError('Please configure your Unsplash API key in your environment variables');
-                return;
-            }
-            throw new Error(errorData.message || 'Failed to fetch images');
-        }
-
-        let data;
-        try {
-            data = await response.json();
-        } catch (e) {
-            console.error('Error parsing response:', e);
-            showError('Failed to load images. Please try again later.');
-            return;
-        }
-
-        if (!data.results || !Array.isArray(data.results)) {
-            console.error('Invalid response format:', data);
-            showError('Failed to load images. Please try again later.');
-            return;
-        }
-
-        const newImages = data.results.map(photo => photo.urls.raw);
-        const newAttributions = data.results.map(photo => ({
-            photographer: photo.user.name,
-            profileUrl: photo.user.links.html
-        }));
-
-        // If this is the first page, clear existing images
-        if (page === 1) {
-            currentImages = [];
-            currentAttributions = [];
-            currentIndex = 0;
-        }
-
-        // Append new images and attributions
-        currentImages = [...currentImages, ...newImages];
-        currentAttributions = [...currentAttributions, ...newAttributions];
-
-        // Create and add new images
-        newImages.forEach((src, index) => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = `Gallery image ${currentImages.length - newImages.length + index + 1}`;
-            if (currentImages.length - newImages.length + index === 0) img.classList.add('active');
-            document.querySelector('.image-container').appendChild(img);
-        });
-
-        // Update initial attribution if this is the first page
-        if (page === 1) {
-            updatePhotoAttribution();
-            startRotation();
-        }
-    } catch (error) {
-        console.error('Error loading images:', error);
-        showError('Failed to load images. Please try again later.');
-    }
+    // Start initial rotation
+    startRotation();
 }
 
 // Start the image rotation
 function startRotation() {
+    // Clear any existing intervals
     if (intervalId) clearInterval(intervalId);
     if (progressIntervalId) clearInterval(progressIntervalId);
     
@@ -242,9 +221,10 @@ function startRotation() {
     progressFill.style.width = '100%';
     
     // Start progress bar animation
-    const startTime = Date.now();
-    const duration = rotationInterval * 1000;
+    startTime = Date.now();
+    duration = rotationInterval * 1000;
     
+    // Update progress bar every 10ms
     progressIntervalId = setInterval(() => {
         if (!isPaused) {
             const elapsed = Date.now() - startTime;
@@ -253,11 +233,46 @@ function startRotation() {
         }
     }, 10);
     
+    // Rotate images at the specified interval
     intervalId = setInterval(() => {
         if (!isPaused) {
             rotateImage();
         }
     }, rotationInterval * 1000);
+}
+
+// Rotate to the next image
+function rotateImage() {
+    const images = document.querySelectorAll('.image-container img');
+    if (images.length === 0) return;
+
+    // Remove active class from current image
+    images[currentIndex].classList.remove('active');
+    
+    // Update current index
+    currentIndex = (currentIndex + 1) % images.length;
+    
+    // Add active class to new image
+    images[currentIndex].classList.add('active');
+    
+    // Update photo attribution
+    updatePhotoAttribution();
+    
+    // Reset progress bar
+    const progressFill = document.querySelector('.progress-fill');
+    progressFill.style.transition = 'none';
+    progressFill.style.width = '100%';
+    // Force a reflow
+    progressFill.style.transition = 'width 1s linear';
+    
+    // Reset start time for progress bar
+    startTime = Date.now();
+    
+    // If we're at the last image and haven't reached max pages, load more
+    if (currentIndex === images.length - 1 && currentPage < MAX_PAGES) {
+        currentPage++;
+        loadImages(currentPage);
+    }
 }
 
 // Pause the rotation
@@ -274,28 +289,6 @@ function resumeRotation() {
 // Reset the rotation with new interval
 function resetRotation() {
     startRotation();
-}
-
-// Rotate to the next image
-function rotateImage() {
-    const images = document.querySelectorAll('.image-container img');
-    images[currentIndex].classList.remove('active');
-    currentIndex = (currentIndex + 1) % images.length;
-    images[currentIndex].classList.add('active');
-    updatePhotoAttribution();
-    
-    // If we're at the last image and haven't reached max pages, load more
-    if (currentIndex === images.length - 1 && currentPage < MAX_PAGES) {
-        currentPage++;
-        loadImages(currentPage);
-    }
-    
-    // Reset progress bar immediately to 100%
-    const progressFill = document.querySelector('.progress-fill');
-    progressFill.style.transition = 'none';
-    progressFill.style.width = '100%';
-    // Force a reflow
-    progressFill.style.transition = 'width 1s linear';
 }
 
 // Initialize the gallery when the page loads
