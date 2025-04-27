@@ -19,4 +19,10 @@ __pycache__/
 
 # OS files
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Coverage directory
+coverage/
+
+# Node modules
+node_modules/ 

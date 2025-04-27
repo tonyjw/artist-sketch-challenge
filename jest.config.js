@@ -7,7 +7,8 @@ export default {
   testMatch: ['**/*.test.js'],
   setupFiles: ['./jest.setup.js'],
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1'
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^./config.js$': '<rootDir>/config.js'
   },
   transformIgnorePatterns: [
     'node_modules/(?!(@jest/globals)/)'
