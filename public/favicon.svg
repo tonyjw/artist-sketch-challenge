@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Front face -->
+    <path d="M4 4h16v16H4z" fill="#3498db"/>
+    <!-- Top face -->
+    <path d="M4 4l4-4h16l-4 4" fill="#2980b9"/>
+    <!-- Right face -->
+    <path d="M20 4l4-4v16l-4-4" fill="#1abc9c"/>
+    <!-- Dots -->
+    <circle cx="8" cy="8" r="1.5" fill="white"/>
+    <circle cx="16" cy="8" r="1.5" fill="white"/>
+    <circle cx="8" cy="16" r="1.5" fill="white"/>
+    <circle cx="16" cy="16" r="1.5" fill="white"/>
+</svg> 
