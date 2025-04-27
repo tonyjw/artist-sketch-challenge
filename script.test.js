@@ -137,10 +137,6 @@ describe('Gallery Initialization', () => {
     const progressFill = document.querySelector('.progress-fill');
     progressFill.style.width = '100%';
     
-    // Simulate progress bar update
-    const startTime = Date.now();
-    const duration = 30 * 1000; // 30 seconds
-    
     // Force a reflow
     progressFill.style.transition = 'none';
     progressFill.style.width = '50%';

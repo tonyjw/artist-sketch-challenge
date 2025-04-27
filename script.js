@@ -94,15 +94,12 @@ function updatePhotoAttribution() {
 
 // Initialize the gallery
 async function initGallery() {
-    const imageContainer = document.querySelector('.image-container');
-    
     // Load themes first
     await loadThemes();
     
     // Set up hamburger menu and config overlay
     const hamburgerMenu = document.querySelector('.hamburger-menu');
     const configOverlay = document.querySelector('.config-overlay');
-    const configContent = document.querySelector('.config-content');
     const closeButton = document.querySelector('.close-button');
 
     // Set initial interval value in input
@@ -168,7 +165,6 @@ async function initGallery() {
 // Load images from Unsplash API
 async function loadImages(page = 1) {
     const theme = document.getElementById('theme').value;
-    const imageContainer = document.querySelector('.image-container');
     
     try {
         const response = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(theme)}&per_page=${IMAGES_PER_PAGE}&page=${page}`, {
@@ -190,7 +186,6 @@ async function loadImages(page = 1) {
 
         // If this is the first page, clear existing images
         if (page === 1) {
-            imageContainer.innerHTML = '';
             currentImages = [];
             currentAttributions = [];
             currentIndex = 0;
@@ -206,7 +201,7 @@ async function loadImages(page = 1) {
             img.src = src;
             img.alt = `Gallery image ${currentImages.length - newImages.length + index + 1}`;
             if (currentImages.length - newImages.length + index === 0) img.classList.add('active');
-            imageContainer.appendChild(img);
+            document.querySelector('.image-container').appendChild(img);
         });
 
         // Update initial attribution if this is the first page
