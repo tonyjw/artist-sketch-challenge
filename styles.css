@@ -147,6 +147,7 @@ body {
     flex-direction: column;
     gap: 10px;
     background: transparent;
+    align-items: center;
 }
 
 .control-group label {
@@ -204,12 +205,6 @@ body {
     flex-direction: column;
     gap: 15px;
     max-width: 90%;
-}
-
-.control-group {
-    display: flex;
-    gap: 10px;
-    align-items: center;
 }
 
 .controls input,
