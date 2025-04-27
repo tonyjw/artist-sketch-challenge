@@ -278,8 +278,6 @@ function rotateImage() {
     progressFill.style.width = '100%';
     // Force a reflow
     progressFill.style.transition = 'width 1s linear';
-    
-    startRotation();
 }
 
 // Initialize the gallery when the page loads
