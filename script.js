@@ -1,5 +1,8 @@
 import { apiConfig, validateApiConfig } from './config.js';
 
+// Validate API configuration
+validateApiConfig(apiConfig);
+
 // Unsplash API configuration
 let themes = [];
 let currentIndex = 0;
