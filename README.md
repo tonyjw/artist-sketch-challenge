@@ -14,12 +14,13 @@ We've pre-selected an assortment of artistic themes to show you, including "Quai
 - Progress bar for timing your sketches
 - Proper Unsplash photo attribution
 - Responsive design
-- Local development server with CORS support
+- Secure API key handling with environment variables
+- Express.js backend for API requests
 - Paginated image loading (up to 100 images per theme)
 
 ## Prerequisites
 
-- Python 3.x (for local development server)
+- Node.js 18.x or later
 - Modern web browser
 - Unsplash API credentials
 
@@ -37,24 +38,42 @@ cd <repository-name>
    - Create a new application
    - Copy your Access Key
 
-3. Set up your API configuration:
-   ```bash
-   # Copy the sample configuration file
-   cp config.sample.js config.js
-   ```
-   
-   Then edit `config.js` with your API credentials:
-   ```javascript
-   const apiConfig = {
-       appId: 'YOUR_APP_ID',
-       accessKey: 'YOUR_ACCESS_KEY',
-       secretKey: 'YOUR_SECRET_KEY'
-   };
-   ```
+3. Install dependencies:
+```bash
+npm install
+```
 
-   Note: The `config.js` file is ignored by git to prevent accidentally committing your API credentials.
+4. Set up environment variables:
+   - Create a `.env` file in the root directory
+   - Add your Unsplash API key:
+   ```
+   UNSPLASH_ACCESS_KEY=your_unsplash_access_key_here
+   ```
+   - The `.env` file is already included in `.gitignore` to prevent committing sensitive data
+   - Never commit your `.env` file or share your API keys
+
+## Development
+
+1. Start the development server:
+```bash
+npm run dev
+```
+
+2. Open your browser and navigate to:
+```
+http://localhost:8000
+```
 
 ## Configuration
+
+### Environment Variables
+The application uses environment variables for configuration:
+
+- `UNSPLASH_ACCESS_KEY`: Your Unsplash API access key
+  - Required for both development and production
+  - Never commit this value to version control
+  - Set in `.env` for local development (automatically ignored by git)
+  - Keep your API keys secure and never share them
 
 ### Rotation Interval
 The rotation interval determines how long each image is displayed before moving to the next one. You can configure this in two ways:
@@ -81,40 +100,23 @@ const IMAGES_PER_PAGE = 10; // Number of images per page
 
 Total maximum images = MAX_PAGES × IMAGES_PER_PAGE (default: 100 images)
 
-## Running the Application
-
-1. Start the local development server:
-```bash
-python server.py
-```
-
-2. Open your browser and navigate to:
-```
-http://localhost:8000
-```
-
-The server will:
-- Serve the application files
-- Handle CORS requests
-- Enable local development
-
-## Development
-
-### Project Structure
+## Project Structure
 
 ```
 .
-├── index.html          # Main HTML file
-├── styles.css          # CSS styles
-├── script.js           # JavaScript application code
-├── themes.json         # Theme configuration
-├── server.py           # Python development server
-├── config.sample.js    # Sample configuration file
-├── .gitignore         # Git ignore rules
-└── README.md          # This file
+├── server.js            # Express server for API and static files
+├── index.html           # Main HTML file
+├── styles.css           # CSS styles
+├── script.js            # JavaScript application code
+├── themes.json          # Theme configuration
+├── package.json         # Dependencies and scripts
+├── .env.sample         # Sample environment variables (safe to commit)
+├── .env                # Local environment variables (git-ignored)
+├── .gitignore          # Git ignore rules
+└── README.md            # This file
 ```
 
-### Adding New Themes
+## Adding New Themes
 
 1. Open `themes.json`
 2. Add a new theme object:
@@ -125,43 +127,27 @@ The server will:
 }
 ```
 
-### Customizing Styles
+## Customizing Styles
 
 - Main styles are in `styles.css`
 - The application uses a clean, minimal design
 - All colors and transitions can be modified in the CSS file
 
-### API Usage
-
-The application uses the Unsplash API to:
-- Search for photos by theme
-- Display high-quality images
-- Properly attribute photographers
-
-Make sure to:
-- Keep your API credentials secure
-- Follow Unsplash's API guidelines
-- Include proper attribution for all photos
-
 ## Troubleshooting
-
-### CORS Issues
-If you encounter CORS errors:
-1. Ensure the Python server is running
-2. Check that you're accessing the site through `http://localhost:8000`
-3. Verify the server is sending proper CORS headers
 
 ### Image Loading Issues
 If images aren't loading:
-1. Verify your Unsplash API credentials in `config.js`
+1. Verify your Unsplash API key is set in environment variables
+   - Check `.env` file for local development
 2. Check the browser console for errors
 3. Ensure you have an active internet connection
 
 ### Server Issues
 If the server won't start:
-1. Verify Python 3.x is installed
+1. Verify Node.js is installed
 2. Check if port 8000 is available
-3. Try running with administrator privileges
+3. Ensure all dependencies are installed
+4. Check the server logs for errors
 
 ## Contributing
 

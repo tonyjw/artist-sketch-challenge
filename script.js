@@ -1,8 +1,3 @@
-import { apiConfig, validateApiConfig } from './config.js';
-
-// Validate API configuration
-validateApiConfig(apiConfig);
-
 // Unsplash API configuration
 let themes = [];
 let currentIndex = 0;
@@ -167,17 +162,40 @@ async function loadImages(page = 1) {
     const theme = document.getElementById('theme').value;
     
     try {
-        const response = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(theme)}&per_page=${IMAGES_PER_PAGE}&page=${page}`, {
-            headers: {
-                'Authorization': `Client-ID ${apiConfig.accessKey}`
-            }
-        });
+        const response = await fetch(`/api/photos?query=${encodeURIComponent(theme)}&per_page=${IMAGES_PER_PAGE}&page=${page}`);
 
         if (!response.ok) {
-            throw new Error('Failed to fetch images from Unsplash');
+            let errorData;
+            try {
+                errorData = await response.json();
+            } catch (e) {
+                console.error('Error parsing error response:', e);
+                showError('Failed to load images. Please try again later.');
+                return;
+            }
+
+            if (errorData.error === 'API key not configured') {
+                showError('Please configure your Unsplash API key in your environment variables');
+                return;
+            }
+            throw new Error(errorData.message || 'Failed to fetch images');
         }
 
-        const data = await response.json();
+        let data;
+        try {
+            data = await response.json();
+        } catch (e) {
+            console.error('Error parsing response:', e);
+            showError('Failed to load images. Please try again later.');
+            return;
+        }
+
+        if (!data.results || !Array.isArray(data.results)) {
+            console.error('Invalid response format:', data);
+            showError('Failed to load images. Please try again later.');
+            return;
+        }
+
         const newImages = data.results.map(photo => photo.urls.raw);
         const newAttributions = data.results.map(photo => ({
             photographer: photo.user.name,
@@ -211,7 +229,7 @@ async function loadImages(page = 1) {
         }
     } catch (error) {
         console.error('Error loading images:', error);
-        alert('Failed to load images. Please check your API configuration.');
+        showError('Failed to load images. Please try again later.');
     }
 }
 

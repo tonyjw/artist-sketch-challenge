@@ -1,5 +1,3 @@
-import { apiConfig, validateApiConfig } from './config.js';
-
 // Mock the DOM elements and functions
 document.body.innerHTML = `
   <div class="image-container"></div>
@@ -34,10 +32,6 @@ describe('Gallery Initialization', () => {
       <div class="progress-fill"></div>
       <div class="photo-attribution"></div>
     `;
-  });
-
-  test('should validate API configuration', () => {
-    expect(() => validateApiConfig(apiConfig)).not.toThrow();
   });
 
   test('should load themes successfully', async () => {

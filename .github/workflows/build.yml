@@ -10,6 +10,8 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    env:
+      UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,17 +21,6 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-      - name: Create test config
-        run: |
-          echo "export const apiConfig = {
-            appId: 'test-app-id',
-            accessKey: 'test-access-key',
-            secretKey: 'test-secret-key'
-          };
-
-          export function validateApiConfig(config) {
-            return true;
-          }" > config.js
       - name: Install dependencies
         run: npm install
       - name: Run tests with coverage

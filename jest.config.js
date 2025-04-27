@@ -1,23 +1,18 @@
 export default {
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.js$': ['babel-jest', { configFile: './.babelrc' }]
+    '^.+\\.js$': 'babel-jest',
   },
-  moduleFileExtensions: ['js', 'json'],
-  testMatch: ['**/*.test.js'],
-  setupFiles: ['./jest.setup.js'],
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
-    '^./config.js$': '<rootDir>/config.js'
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
-  transformIgnorePatterns: [
-    'node_modules/(?!(@jest/globals)/)'
-  ],
-  globals: {
-    jest: true,
-    describe: true,
-    test: true,
-    expect: true,
-    beforeEach: true
-  }
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testMatch: ['**/__tests__/**/*.js', '**/?(*.)+(spec|test).js'],
+  collectCoverageFrom: [
+    '**/*.js',
+    '!**/node_modules/**',
+    '!**/coverage/**',
+    '!**/jest.config.js',
+    '!**/jest.setup.js'
+  ]
 }; 
