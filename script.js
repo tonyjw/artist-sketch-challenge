@@ -24,7 +24,7 @@ const progressFill = document.querySelector('.progress-fill');
 const photoAttribution = document.querySelector('.photo-attribution');
 
 // Load themes from themes.json
-export async function loadThemes() {
+async function loadThemes() {
   try {
     const response = await fetch('themes.json', {
       method: 'GET',
@@ -63,7 +63,7 @@ export async function loadThemes() {
 }
 
 // Load images from server API
-export async function loadImages() {
+async function loadImages() {
   try {
     const query = themeSelect.value;
     const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${currentPage}`);
@@ -76,7 +76,24 @@ export async function loadImages() {
       throw new Error('Failed to load images');
     }
     
-    const data = await response.json();
+    // Log the raw response for debugging
+    const rawResponse = await response.text();
+    //console.log('Raw response:', rawResponse);
+    
+    let data;
+    try {
+      data = JSON.parse(rawResponse);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      console.error('Invalid JSON data:', rawResponse);
+      throw new Error('Invalid response from server');
+    }
+    
+    if (!data.results || !Array.isArray(data.results)) {
+      console.error('Invalid response format:', data);
+      throw new Error('Invalid response format from server');
+    }
+    
     images = data.results;
     currentImageIndex = 0;
     
@@ -89,20 +106,42 @@ export async function loadImages() {
   }
 }
 
+// Show error message
+function showError(message) {
+    // Create error message element if it doesn't exist
+    let errorMessage = document.querySelector('.error-message');
+    if (!errorMessage) {
+        errorMessage = document.createElement('div');
+        errorMessage.className = 'error-message';
+        document.body.appendChild(errorMessage);
+    }
+    
+    // Set the error message
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+    
+    // Hide the message after 3 seconds
+    setTimeout(() => {
+        errorMessage.style.display = 'none';
+    }, 3000);
+}
+
 // Show success message
 function showSuccessMessage() {
     const successMessage = document.querySelector('.success-message');
-    successMessage.classList.add('show');
-    
-    // Clear any existing timeout
-    if (successMessageTimeout) {
-        clearTimeout(successMessageTimeout);
+    if (successMessage) {
+        successMessage.classList.add('show');
+        
+        // Clear any existing timeout
+        if (successMessageTimeout) {
+            clearTimeout(successMessageTimeout);
+        }
+        
+        // Hide the message after 2 seconds
+        successMessageTimeout = setTimeout(() => {
+            successMessage.classList.remove('show');
+        }, 2000);
     }
-    
-    // Hide the message after 2 seconds
-    successMessageTimeout = setTimeout(() => {
-        successMessage.classList.remove('show');
-    }, 2000);
 }
 
 // Display the current image
@@ -296,3 +335,6 @@ function resetRotation() {
 
 // Initialize the gallery when the page loads
 window.addEventListener('load', initGallery);
+
+// Export functions that need to be accessed from other modules
+export { loadThemes, loadImages };

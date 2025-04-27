@@ -40,3 +40,4 @@ yarn-error.log*
 
 # Testing
 .nyc_output/ 
+.vercel
