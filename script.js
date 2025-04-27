@@ -15,17 +15,13 @@ let isPaused = false;
 let successMessageTimeout = null;
 let startTime = Date.now();
 let duration = rotationInterval * 1000;
+let themes = [];
 
 // DOM Elements
 const imageContainer = document.querySelector('.image-container');
 const themeSelect = document.getElementById('theme');
 const progressFill = document.querySelector('.progress-fill');
 const photoAttribution = document.querySelector('.photo-attribution');
-
-let themes = [];
-let currentIndex = 0;
-const MAX_PAGES = 10;
-const IMAGES_PER_PAGE = 10;
 
 // Load themes from themes.json
 export async function loadThemes() {
@@ -42,7 +38,7 @@ export async function loadThemes() {
     }
     
     const data = await response.json();
-    const themes = data.themes;
+    themes = data.themes;
     
     // Clear existing options
     themeSelect.innerHTML = '';
@@ -60,6 +56,7 @@ export async function loadThemes() {
   } catch (error) {
     console.error('Error loading themes:', error);
     // Fallback to default theme
+    themes = [{ query: 'quaint streets', display: 'Quaint Streets' }];
     themeSelect.value = 'quaint streets';
     await loadImages();
   }
@@ -186,11 +183,17 @@ async function initGallery() {
     const surpriseLink = document.querySelector('.surprise-theme');
     surpriseLink.addEventListener('click', (e) => {
         e.preventDefault();
+        if (themes.length === 0) {
+            console.error('No themes available');
+            return;
+        }
         currentPage = 1; // Reset page counter when theme changes
         const randomIndex = Math.floor(Math.random() * themes.length);
-        themeSelect.value = themes[randomIndex].query;
-        loadImages();
-        showSuccessMessage();
+        if (themes[randomIndex]) {
+            themeSelect.value = themes[randomIndex].query;
+            loadImages();
+            showSuccessMessage();
+        }
     });
 
     // Set up interval control with auto-save
@@ -247,13 +250,13 @@ function rotateImage() {
     if (images.length === 0) return;
 
     // Remove active class from current image
-    images[currentIndex].classList.remove('active');
+    images[currentImageIndex].classList.remove('active');
     
     // Update current index
-    currentIndex = (currentIndex + 1) % images.length;
+    currentImageIndex = (currentImageIndex + 1) % images.length;
     
     // Add active class to new image
-    images[currentIndex].classList.add('active');
+    images[currentImageIndex].classList.add('active');
     
     // Update photo attribution
     updatePhotoAttribution();
@@ -269,7 +272,7 @@ function rotateImage() {
     startTime = Date.now();
     
     // If we're at the last image and haven't reached max pages, load more
-    if (currentIndex === images.length - 1 && currentPage < MAX_PAGES) {
+    if (currentImageIndex === images.length - 1 && currentPage < MAX_PAGES) {
         currentPage++;
         loadImages(currentPage);
     }
