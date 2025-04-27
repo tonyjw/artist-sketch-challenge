@@ -1,6 +1,10 @@
 # Artist Sketch Challenge
 
-A fullscreen image gallery designed to inspire artists with rotating reference photos. The gallery features carefully curated themes perfect for sketching and painting practice, with a clean interface that lets you focus on the subject matter.
+Do you want to get better at urban sketching? Need some inspiration for painting or drawing?
+
+Use the Artist Sketch Challenge to practice your skills with a little artistic pressure - you have only 30 seconds to draw what you see before moving on.  
+
+We've pre-selected an assortment of artistic themes to show you, including "Quaint Streets", "Nature Close-ups" and more.
 
 ## Features
 
