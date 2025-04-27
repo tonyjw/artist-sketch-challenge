@@ -1,0 +1,80 @@
+{
+    "themes": [
+        {
+            "query": "quaint streets",
+            "display": "Quaint Streets"
+        },
+        {
+            "query": "rustic architecture",
+            "display": "Rustic Architecture"
+        },
+        {
+            "query": "vintage storefronts",
+            "display": "Vintage Storefronts"
+        },
+        {
+            "query": "garden paths",
+            "display": "Garden Paths"
+        },
+        {
+            "query": "coastal scenes",
+            "display": "Coastal Scenes"
+        },
+        {
+            "query": "mountain landscapes",
+            "display": "Mountain Landscapes"
+        },
+        {
+            "query": "historical buildings",
+            "display": "Historical Buildings"
+        },
+        {
+            "query": "street cafes",
+            "display": "Street Cafes"
+        },
+        {
+            "query": "botanical gardens",
+            "display": "Botanical Gardens"
+        },
+        {
+            "query": "waterfront views",
+            "display": "Waterfront Views"
+        },
+        {
+            "query": "city parks",
+            "display": "City Parks"
+        },
+        {
+            "query": "rural landscapes",
+            "display": "Rural Landscapes"
+        },
+        {
+            "query": "artistic still life",
+            "display": "Artistic Still Life"
+        },
+        {
+            "query": "vintage vehicles",
+            "display": "Vintage Vehicles"
+        },
+        {
+            "query": "doorways and entrances",
+            "display": "Doorways and Entrances"
+        },
+        {
+            "query": "street markets",
+            "display": "Street Markets"
+        },
+        {
+            "query": "seasonal scenes",
+            "display": "Seasonal Scenes"
+        },
+        {
+            "query": "architectural details",
+            "display": "Architectural Details"
+        },
+        {
+            "query": "nature close-ups",
+            "display": "Nature Close-ups"
+        }
+    ]
+} 
