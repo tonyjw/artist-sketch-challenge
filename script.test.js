@@ -95,6 +95,7 @@ describe('Gallery Initialization', () => {
         const data = await response.json();
         return data;
       } catch (error) {
+        console.error('Failed to load themes:', error);
         // Set the default theme value
         themeSelect.value = 'quaint streets';
         // Add the option to the select

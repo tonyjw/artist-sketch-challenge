@@ -24,9 +24,9 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Mock IntersectionObserver
 class IntersectionObserver {
-  constructor() {}
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  // Empty methods required for mock implementation
+  observe() {} // eslint-disable-line no-empty-function
+  unobserve() {} // eslint-disable-line no-empty-function
+  disconnect() {} // eslint-disable-line no-empty-function
 }
 window.IntersectionObserver = IntersectionObserver; 
