@@ -282,7 +282,6 @@ function rotateImage() {
     progressFill.style.transition = 'none';
     progressFill.style.width = '100%';
     // Force a reflow
-    progressFill.offsetHeight;
     progressFill.style.transition = 'width 1s linear';
     
     startRotation();
