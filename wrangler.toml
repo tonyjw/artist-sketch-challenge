@@ -1,6 +1,0 @@
-name = "artist-sketch-challenge"
-compatibility_date = "2024-01-01"
-pages_build_output_dir = "."
-
-# Environment variables (set in Cloudflare dashboard)
-# UNSPLASH_ACCESS_KEY = "your_key_here"
