@@ -5,7 +5,8 @@ config.js
 .env
 .env.local
 .env.*.local
-!.env.sample
+.dev.vars
+!.dev.vars.sample
 
 # Python
 __pycache__/
@@ -39,5 +40,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Testing
-.nyc_output/ 
-.vercel
+.nyc_output/
+
+# Cloudflare
+.wrangler/
