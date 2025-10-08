@@ -1,0 +1,6 @@
+# Local development environment variables for Cloudflare Pages
+# This file is used by Wrangler for local development
+# Copy this file to .dev.vars and add your actual API key
+
+# Get your API key from https://unsplash.com/developers
+UNSPLASH_ACCESS_KEY=your_unsplash_access_key_here

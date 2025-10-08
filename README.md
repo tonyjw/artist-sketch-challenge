@@ -155,6 +155,7 @@ npm run deploy
 ├── themes.json          # Theme configuration
 ├── package.json         # Dependencies and scripts
 ├── wrangler.toml        # Cloudflare Wrangler configuration
+├── .dev.vars.sample     # Sample environment variables (copy to .dev.vars)
 ├── .dev.vars            # Local environment variables (git-ignored)
 ├── .gitignore           # Git ignore rules
 └── README.md            # This file

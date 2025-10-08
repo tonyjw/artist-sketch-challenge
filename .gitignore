@@ -5,8 +5,8 @@ config.js
 .env
 .env.local
 .env.*.local
-!.env.sample
 .dev.vars
+!.dev.vars.sample
 
 # Python
 __pycache__/
