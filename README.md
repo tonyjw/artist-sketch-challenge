@@ -15,7 +15,7 @@ We've pre-selected an assortment of artistic themes to show you, including "Quai
 - Proper Unsplash photo attribution
 - Responsive design
 - Secure API key handling with environment variables
-- Express.js backend for API requests
+- Cloudflare Pages Functions for serverless API
 - Paginated image loading (up to 100 images per theme)
 
 ## Prerequisites
@@ -23,6 +23,7 @@ We've pre-selected an assortment of artistic themes to show you, including "Quai
 - Node.js 18.x or later
 - Modern web browser
 - Unsplash API credentials
+- Cloudflare account (for deployment)
 
 ## Setup
 
@@ -43,18 +44,18 @@ cd <repository-name>
 npm install
 ```
 
-4. Set up environment variables:
-   - Create a `.env` file in the root directory
+4. Set up environment variables for local development:
+   - Create a `.dev.vars` file in the root directory
    - Add your Unsplash API key:
    ```
    UNSPLASH_ACCESS_KEY=your_unsplash_access_key_here
    ```
-   - The `.env` file is already included in `.gitignore` to prevent committing sensitive data
-   - Never commit your `.env` file or share your API keys
+   - The `.dev.vars` file is already included in `.gitignore` to prevent committing sensitive data
+   - Never commit your `.dev.vars` file or share your API keys
 
 ## Development
 
-1. Start the development server:
+1. Start the development server with Wrangler:
 ```bash
 npm run dev
 ```
@@ -72,7 +73,8 @@ The application uses environment variables for configuration:
 - `UNSPLASH_ACCESS_KEY`: Your Unsplash API access key
   - Required for both development and production
   - Never commit this value to version control
-  - Set in `.env` for local development (automatically ignored by git)
+  - Set in `.dev.vars` for local development (automatically ignored by git)
+  - Set in Cloudflare Pages dashboard for production
   - Keep your API keys secure and never share them
 
 ### Rotation Interval
@@ -100,19 +102,61 @@ const IMAGES_PER_PAGE = 10; // Number of images per page
 
 Total maximum images = MAX_PAGES × IMAGES_PER_PAGE (default: 100 images)
 
+## Deployment to Cloudflare Pages
+
+### Option 1: Deploy via Cloudflare Dashboard (Recommended)
+
+1. Log in to your [Cloudflare dashboard](https://dash.cloudflare.com/)
+2. Go to "Workers & Pages" → "Pages"
+3. Click "Create application" → "Connect to Git"
+4. Select your repository and authorize Cloudflare
+5. Configure the build settings:
+   - **Build command:** (leave empty)
+   - **Build output directory:** `/` (root directory)
+6. Add environment variables:
+   - Variable name: `UNSPLASH_ACCESS_KEY`
+   - Value: Your Unsplash API access key
+7. Click "Save and Deploy"
+
+Your site will be deployed to a `*.pages.dev` URL and automatically redeploy on every push to your main branch.
+
+### Option 2: Deploy via Wrangler CLI
+
+1. Install Wrangler CLI globally (if not already installed):
+```bash
+npm install -g wrangler
+```
+
+2. Authenticate with Cloudflare:
+```bash
+wrangler login
+```
+
+3. Deploy your site:
+```bash
+npm run deploy
+```
+
+4. Set environment variables in the Cloudflare dashboard:
+   - Go to your Pages project
+   - Navigate to Settings → Environment variables
+   - Add `UNSPLASH_ACCESS_KEY` with your API key
+
 ## Project Structure
 
 ```
 .
-├── server.js            # Express server for API and static files
+├── functions/           # Cloudflare Pages Functions
+│   └── api/
+│       └── photos.js    # API endpoint for Unsplash photos
 ├── index.html           # Main HTML file
 ├── styles.css           # CSS styles
 ├── script.js            # JavaScript application code
 ├── themes.json          # Theme configuration
 ├── package.json         # Dependencies and scripts
-├── .env.sample         # Sample environment variables (safe to commit)
-├── .env                # Local environment variables (git-ignored)
-├── .gitignore          # Git ignore rules
+├── wrangler.toml        # Cloudflare Wrangler configuration
+├── .dev.vars            # Local environment variables (git-ignored)
+├── .gitignore           # Git ignore rules
 └── README.md            # This file
 ```
 
@@ -138,16 +182,18 @@ Total maximum images = MAX_PAGES × IMAGES_PER_PAGE (default: 100 images)
 ### Image Loading Issues
 If images aren't loading:
 1. Verify your Unsplash API key is set in environment variables
-   - Check `.env` file for local development
+   - Check `.dev.vars` file for local development
+   - Check Cloudflare Pages dashboard for production
 2. Check the browser console for errors
 3. Ensure you have an active internet connection
 
-### Server Issues
-If the server won't start:
+### Development Server Issues
+If the development server won't start:
 1. Verify Node.js is installed
 2. Check if port 8000 is available
-3. Ensure all dependencies are installed
-4. Check the server logs for errors
+3. Ensure all dependencies are installed (run `npm install`)
+4. Verify Wrangler is installed correctly
+5. Check the server logs for errors
 
 ## Contributing
 
