@@ -152,7 +152,8 @@ function displayImage() {
     // Create and add new images
     images.forEach((photo, index) => {
         const img = document.createElement('img');
-        img.src = photo.urls.raw;
+        // Use 'regular' size (~1080px) instead of 'raw' for better performance
+        img.src = photo.urls.regular;
         img.alt = `Gallery image ${index + 1}`;
         if (index === currentImageIndex) {
             img.classList.add('active');
