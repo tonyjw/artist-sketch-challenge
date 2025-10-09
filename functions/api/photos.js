@@ -55,8 +55,10 @@ export async function onRequest(context) {
       );
     }
 
-    // Make request to Unsplash API
-    const unsplashUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${page}`;
+    // Make request to Unsplash API random photos endpoint
+    // Using random endpoint to get different photos on each load
+    const count = Math.min(parseInt(perPage), 30); // Unsplash API max is 30
+    const unsplashUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(query)}&count=${count}`;
     const response = await fetch(unsplashUrl, {
       headers: {
         'Authorization': `Client-ID ${apiKey}`,
@@ -71,7 +73,15 @@ export async function onRequest(context) {
 
     const data = await response.json();
 
-    return new Response(JSON.stringify(data), {
+    // Random endpoint returns an array directly, but we need to match search API format
+    // Wrap in results object to maintain compatibility with existing frontend code
+    const formattedData = {
+      results: Array.isArray(data) ? data : [data],
+      total: Array.isArray(data) ? data.length : 1,
+      total_pages: 1
+    };
+
+    return new Response(JSON.stringify(formattedData), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
