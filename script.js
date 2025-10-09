@@ -300,13 +300,13 @@ function rotateImage() {
     // Update photo attribution
     updatePhotoAttribution();
     
-    // Reset progress bar
+    // Reset progress bar instantly (no animation)
     const progressFill = document.querySelector('.progress-fill');
     progressFill.style.transition = 'none';
     progressFill.style.width = '100%';
-    // Force a reflow
-    progressFill.style.transition = 'width 1s linear';
-    
+    // Force a reflow to apply the change
+    void progressFill.offsetWidth;
+
     // Reset start time for progress bar
     startTime = Date.now();
     
