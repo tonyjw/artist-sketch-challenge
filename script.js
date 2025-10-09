@@ -73,19 +73,8 @@ async function loadImages() {
       throw new Error('Failed to load images');
     }
     
-    // Log the raw response for debugging
-    const rawResponse = await response.text();
-    //console.log('Raw response:', rawResponse);
-    
-    let data;
-    try {
-      data = JSON.parse(rawResponse);
-    } catch (parseError) {
-      console.error('JSON parse error:', parseError);
-      console.error('Invalid JSON data:', rawResponse);
-      throw new Error('Invalid response from server');
-    }
-    
+    const data = await response.json();
+
     if (!data.results || !Array.isArray(data.results)) {
       console.error('Invalid response format:', data);
       throw new Error('Invalid response format from server');
