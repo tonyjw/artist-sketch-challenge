@@ -304,15 +304,8 @@ function rotateImage() {
     // Update photo attribution
     updatePhotoAttribution();
 
-    // Reset progress bar instantly (no animation)
-    const progressFill = document.querySelector('.progress-fill');
-    progressFill.style.transition = 'none';
-    progressFill.style.width = '100%';
-    // Force a reflow to apply the change
-    void progressFill.offsetWidth;
-
-    // Reset start time for progress bar
-    startTime = Date.now();
+    // Reset progress bar
+    resetProgressBar();
 }
 
 // Pause the rotation
@@ -329,6 +322,15 @@ function resumeRotation() {
 // Reset the rotation with new interval
 function resetRotation() {
     startRotation();
+}
+
+// Helper function to reset progress bar instantly
+function resetProgressBar() {
+    const progressFill = document.querySelector('.progress-fill');
+    progressFill.style.transition = 'none';
+    progressFill.style.width = '100%';
+    void progressFill.offsetWidth;
+    startTime = Date.now();
 }
 
 // Navigate to next image
