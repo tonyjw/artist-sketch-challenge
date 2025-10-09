@@ -163,10 +163,8 @@ function displayImage() {
     // Update photo attribution
     updatePhotoAttribution();
 
-    // Start rotation if this is the first page
-    if (currentPage === 1) {
-        startRotation();
-    }
+    // Start rotation
+    startRotation();
 }
 
 // Update photo attribution
