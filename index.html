@@ -8,56 +8,32 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="gallery-container">
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
-        </div>
-        <div class="image-container">
-            <!-- Images will be added dynamically via JavaScript -->
-        </div>
-        <div class="attribution">
-            <span class="photo-attribution"></span>
-        </div>
-        <button class="hamburger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="config-overlay">
-            <div class="config-content">
-                <button class="close-button">×</button>
-                <h2>Gallery Configuration</h2>
-                <div class="success-message">Settings saved successfully!</div>
-                <div class="control-group">
-                    <label for="interval">Speed (in seconds):</label>
-                    <input type="number" id="interval" value="30" min="1" max="300">
-                </div>
-                <div class="control-group">
-                    <label for="theme">Theme:</label>
-                    <div class="theme-selector">
-                        <select id="theme">
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        <a href="#" class="surprise-theme" title="Surprise Me!">
-                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="1" fill="none">
-                                <!-- Front face -->
-                                <path d="M4 4h16v16H4z"/>
-                                <!-- Top face -->
-                                <path d="M4 4l4-4h16l-4 4"/>
-                                <!-- Right face -->
-                                <path d="M20 4l4-4v16l-4-4"/>
-                                <!-- Dots -->
-                                <circle cx="8" cy="8" r="1"/>
-                                <circle cx="16" cy="8" r="1"/>
-                                <circle cx="8" cy="16" r="1"/>
-                                <circle cx="16" cy="16" r="1"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
+    <div class="landing-page">
+        <div class="landing-content">
+            <h1>Artist Sketch Challenge</h1>
+            <p class="tagline">Do you want to get better at urban sketching? Need some inspiration for painting or drawing?</p>
+
+            <p class="description">
+                Use the Artist Sketch Challenge to practice your skills with a little artistic pressure -
+                you have only 30 seconds to draw what you see before moving on.
+            </p>
+
+            <div class="features">
+                <h2>Features</h2>
+                <ul>
+                    <li>Curated artistic themes including "Quaint Streets", "Nature Close-ups" and more</li>
+                    <li>Configurable rotation interval for timed sketching sessions</li>
+                    <li>Fullscreen reference image display</li>
+                    <li>Progress bar to track your time</li>
+                </ul>
+            </div>
+
+            <a href="gallery.html" class="start-button">Start Challenge</a>
+
+            <div class="footer">
+                <p>Powered by <a href="https://unsplash.com" target="_blank">Unsplash</a></p>
             </div>
         </div>
     </div>
-    <script src="script.js" type="module"></script>
 </body>
-</html> 
+</html>
