@@ -148,22 +148,30 @@ function showSuccessMessage() {
 function displayImage() {
     // Clear existing images
     imageContainer.innerHTML = '';
-    
-    // Create and add new images
+
+    // Lazy load: only create img elements for current and next image
+    // This significantly improves performance by not loading all images at once
+    const nextIndex = (currentImageIndex + 1) % images.length;
+
     images.forEach((photo, index) => {
         const img = document.createElement('img');
         // Use 'regular' size (~1080px) instead of 'raw' for better performance
-        img.src = photo.urls.regular;
+
+        // Only set src for current and next image (lazy loading)
+        if (index === currentImageIndex || index === nextIndex) {
+            img.src = photo.urls.regular;
+        }
+
         img.alt = `Gallery image ${index + 1}`;
         if (index === currentImageIndex) {
             img.classList.add('active');
         }
         imageContainer.appendChild(img);
     });
-    
+
     // Update photo attribution
     updatePhotoAttribution();
-    
+
     // Start rotation if this is the first page
     if (currentPage === 1) {
         startRotation();
@@ -286,21 +294,32 @@ function startRotation() {
 
 // Rotate to the next image
 function rotateImage() {
-    const images = document.querySelectorAll('.image-container img');
-    if (images.length === 0) return;
+    const imgElements = document.querySelectorAll('.image-container img');
+    if (imgElements.length === 0) return;
 
     // Remove active class from current image
-    images[currentImageIndex].classList.remove('active');
-    
+    imgElements[currentImageIndex].classList.remove('active');
+
     // Update current index
-    currentImageIndex = (currentImageIndex + 1) % images.length;
-    
+    currentImageIndex = (currentImageIndex + 1) % imgElements.length;
+
     // Add active class to new image
-    images[currentImageIndex].classList.add('active');
-    
+    imgElements[currentImageIndex].classList.add('active');
+
+    // Lazy load the current image if not already loaded
+    if (!imgElements[currentImageIndex].src) {
+        imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
+    }
+
+    // Preload next image
+    const nextIndex = (currentImageIndex + 1) % imgElements.length;
+    if (!imgElements[nextIndex].src) {
+        imgElements[nextIndex].src = images[nextIndex].urls.regular;
+    }
+
     // Update photo attribution
     updatePhotoAttribution();
-    
+
     // Reset progress bar instantly (no animation)
     const progressFill = document.querySelector('.progress-fill');
     progressFill.style.transition = 'none';
@@ -336,17 +355,28 @@ function resetRotation() {
 
 // Navigate to next image
 function nextImage() {
-    const images = document.querySelectorAll('.image-container img');
-    if (images.length === 0) return;
+    const imgElements = document.querySelectorAll('.image-container img');
+    if (imgElements.length === 0) return;
 
     // Remove active class from current image
-    images[currentImageIndex].classList.remove('active');
+    imgElements[currentImageIndex].classList.remove('active');
 
     // Move to next image
-    currentImageIndex = (currentImageIndex + 1) % images.length;
+    currentImageIndex = (currentImageIndex + 1) % imgElements.length;
 
     // Add active class to new image
-    images[currentImageIndex].classList.add('active');
+    imgElements[currentImageIndex].classList.add('active');
+
+    // Lazy load the current image if not already loaded
+    if (!imgElements[currentImageIndex].src) {
+        imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
+    }
+
+    // Preload next image
+    const nextIndex = (currentImageIndex + 1) % imgElements.length;
+    if (!imgElements[nextIndex].src) {
+        imgElements[nextIndex].src = images[nextIndex].urls.regular;
+    }
 
     // Update photo attribution
     updatePhotoAttribution();
@@ -363,20 +393,25 @@ function nextImage() {
 
 // Navigate to previous image
 function previousImage() {
-    const images = document.querySelectorAll('.image-container img');
-    if (images.length === 0) return;
+    const imgElements = document.querySelectorAll('.image-container img');
+    if (imgElements.length === 0) return;
 
     // Don't go back if we're at the first image
     if (currentImageIndex === 0) return;
 
     // Remove active class from current image
-    images[currentImageIndex].classList.remove('active');
+    imgElements[currentImageIndex].classList.remove('active');
 
     // Move to previous image
     currentImageIndex = currentImageIndex - 1;
 
     // Add active class to new image
-    images[currentImageIndex].classList.add('active');
+    imgElements[currentImageIndex].classList.add('active');
+
+    // Lazy load the current image if not already loaded
+    if (!imgElements[currentImageIndex].src) {
+        imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
+    }
 
     // Update photo attribution
     updatePhotoAttribution();
