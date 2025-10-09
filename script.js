@@ -362,13 +362,7 @@ function nextImage() {
     updatePhotoAttribution();
 
     // Reset progress bar
-    const progressFill = document.querySelector('.progress-fill');
-    progressFill.style.transition = 'none';
-    progressFill.style.width = '100%';
-    void progressFill.offsetWidth;
-
-    // Reset start time for progress bar
-    startTime = Date.now();
+    resetProgressBar();
 }
 
 // Navigate to previous image
@@ -397,13 +391,7 @@ function previousImage() {
     updatePhotoAttribution();
 
     // Reset progress bar
-    const progressFill = document.querySelector('.progress-fill');
-    progressFill.style.transition = 'none';
-    progressFill.style.width = '100%';
-    void progressFill.offsetWidth;
-
-    // Reset start time for progress bar
-    startTime = Date.now();
+    resetProgressBar();
 }
 
 // Keyboard navigation
