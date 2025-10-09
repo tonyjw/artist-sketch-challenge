@@ -300,13 +300,13 @@ function rotateImage() {
     // Update photo attribution
     updatePhotoAttribution();
     
-    // Reset progress bar
+    // Reset progress bar instantly (no animation)
     const progressFill = document.querySelector('.progress-fill');
     progressFill.style.transition = 'none';
     progressFill.style.width = '100%';
-    // Force a reflow
-    progressFill.style.transition = 'width 1s linear';
-    
+    // Force a reflow to apply the change
+    void progressFill.offsetWidth;
+
     // Reset start time for progress bar
     startTime = Date.now();
     
@@ -332,6 +332,74 @@ function resumeRotation() {
 function resetRotation() {
     startRotation();
 }
+
+// Navigate to next image
+function nextImage() {
+    const images = document.querySelectorAll('.image-container img');
+    if (images.length === 0) return;
+
+    // Remove active class from current image
+    images[currentImageIndex].classList.remove('active');
+
+    // Move to next image
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+
+    // Add active class to new image
+    images[currentImageIndex].classList.add('active');
+
+    // Update photo attribution
+    updatePhotoAttribution();
+
+    // Reset progress bar
+    const progressFill = document.querySelector('.progress-fill');
+    progressFill.style.transition = 'none';
+    progressFill.style.width = '100%';
+    void progressFill.offsetWidth;
+
+    // Reset start time for progress bar
+    startTime = Date.now();
+}
+
+// Navigate to previous image
+function previousImage() {
+    const images = document.querySelectorAll('.image-container img');
+    if (images.length === 0) return;
+
+    // Don't go back if we're at the first image
+    if (currentImageIndex === 0) return;
+
+    // Remove active class from current image
+    images[currentImageIndex].classList.remove('active');
+
+    // Move to previous image
+    currentImageIndex = currentImageIndex - 1;
+
+    // Add active class to new image
+    images[currentImageIndex].classList.add('active');
+
+    // Update photo attribution
+    updatePhotoAttribution();
+
+    // Reset progress bar
+    const progressFill = document.querySelector('.progress-fill');
+    progressFill.style.transition = 'none';
+    progressFill.style.width = '100%';
+    void progressFill.offsetWidth;
+
+    // Reset start time for progress bar
+    startTime = Date.now();
+}
+
+// Keyboard navigation
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextImage();
+    } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        previousImage();
+    }
+});
 
 // Initialize the gallery when the page loads
 window.addEventListener('load', initGallery);
