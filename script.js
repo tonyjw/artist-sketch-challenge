@@ -258,15 +258,15 @@ function startRotation() {
     // Start progress bar animation
     startTime = Date.now();
     duration = rotationInterval * 1000;
-    
-    // Update progress bar every 10ms
+
+    // Update progress bar every 50ms (20fps - smooth but efficient)
     progressIntervalId = setInterval(() => {
         if (!isPaused) {
             const elapsed = Date.now() - startTime;
             const progress = Math.max(0, 100 - (elapsed / duration) * 100);
             progressFill.style.width = `${progress}%`;
         }
-    }, 10);
+    }, 50);
     
     // Rotate images at the specified interval
     intervalId = setInterval(() => {
