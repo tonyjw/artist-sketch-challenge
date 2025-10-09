@@ -14,11 +14,16 @@ let startTime = Date.now();
 let duration = rotationInterval * 1000;
 let themes = [];
 
-// DOM Elements
+// DOM Elements - cached for better performance
 const imageContainer = document.querySelector('.image-container');
 const themeSelect = document.getElementById('theme');
 const progressFill = document.querySelector('.progress-fill');
 const photoAttribution = document.querySelector('.photo-attribution');
+const hamburgerMenu = document.querySelector('.hamburger-menu');
+const configOverlay = document.querySelector('.config-overlay');
+const closeButton = document.querySelector('.close-button');
+const intervalInput = document.getElementById('interval');
+const surpriseLink = document.querySelector('.surprise-theme');
 
 // Load themes from themes.json
 async function loadThemes() {
@@ -176,14 +181,8 @@ function updatePhotoAttribution() {
 async function initGallery() {
     // Load themes first
     await loadThemes();
-    
-    // Set up hamburger menu and config overlay
-    const hamburgerMenu = document.querySelector('.hamburger-menu');
-    const configOverlay = document.querySelector('.config-overlay');
-    const closeButton = document.querySelector('.close-button');
 
     // Set initial interval value in input
-    const intervalInput = document.getElementById('interval');
     intervalInput.value = rotationInterval;
 
     hamburgerMenu.addEventListener('click', () => {
@@ -206,14 +205,12 @@ async function initGallery() {
     });
 
     // Set up theme selection with auto-save
-    const themeSelect = document.getElementById('theme');
     themeSelect.addEventListener('change', () => {
         loadImages();
         showSuccessMessage();
     });
 
     // Set up surprise theme link
-    const surpriseLink = document.querySelector('.surprise-theme');
     surpriseLink.addEventListener('click', (e) => {
         e.preventDefault();
         if (themes.length === 0) {
@@ -251,8 +248,7 @@ function startRotation() {
     // Clear any existing intervals
     if (intervalId) clearInterval(intervalId);
     if (progressIntervalId) clearInterval(progressIntervalId);
-    
-    const progressFill = document.querySelector('.progress-fill');
+
     progressFill.style.width = '100%';
     
     // Start progress bar animation
@@ -326,7 +322,6 @@ function resetRotation() {
 
 // Helper function to reset progress bar instantly
 function resetProgressBar() {
-    const progressFill = document.querySelector('.progress-fill');
     progressFill.style.transition = 'none';
     progressFill.style.width = '100%';
     void progressFill.offsetWidth;
