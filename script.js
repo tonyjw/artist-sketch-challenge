@@ -3,25 +3,27 @@ const apiUrl = '/api/photos'; // Use server endpoint
 const perPage = 10;
 
 // Initialize variables
-let currentPage = 1;
 let currentImageIndex = 0;
 let images = [];
 let rotationInterval = parseInt(localStorage.getItem('rotationInterval')) || 30; // Load saved interval or use default
 let intervalId = null;
 let progressIntervalId = null;
-let currentImages = [];
-let currentAttributions = [];
 let isPaused = false;
 let successMessageTimeout = null;
 let startTime = Date.now();
 let duration = rotationInterval * 1000;
 let themes = [];
 
-// DOM Elements
+// DOM Elements - cached for better performance
 const imageContainer = document.querySelector('.image-container');
 const themeSelect = document.getElementById('theme');
 const progressFill = document.querySelector('.progress-fill');
 const photoAttribution = document.querySelector('.photo-attribution');
+const hamburgerMenu = document.querySelector('.hamburger-menu');
+const configOverlay = document.querySelector('.config-overlay');
+const closeButton = document.querySelector('.close-button');
+const intervalInput = document.getElementById('interval');
+const surpriseLink = document.querySelector('.surprise-theme');
 
 // Load themes from themes.json
 async function loadThemes() {
@@ -66,7 +68,7 @@ async function loadThemes() {
 async function loadImages() {
   try {
     const query = themeSelect.value;
-    const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${currentPage}`);
+    const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}&per_page=${perPage}`);
     
     if (!response.ok) {
       const error = await response.json();
@@ -76,19 +78,8 @@ async function loadImages() {
       throw new Error('Failed to load images');
     }
     
-    // Log the raw response for debugging
-    const rawResponse = await response.text();
-    //console.log('Raw response:', rawResponse);
-    
-    let data;
-    try {
-      data = JSON.parse(rawResponse);
-    } catch (parseError) {
-      console.error('JSON parse error:', parseError);
-      console.error('Invalid JSON data:', rawResponse);
-      throw new Error('Invalid response from server');
-    }
-    
+    const data = await response.json();
+
     if (!data.results || !Array.isArray(data.results)) {
       console.error('Invalid response format:', data);
       throw new Error('Invalid response format from server');
@@ -148,22 +139,30 @@ function showSuccessMessage() {
 function displayImage() {
     // Clear existing images
     imageContainer.innerHTML = '';
-    
-    // Create and add new images
+
+    // Lazy load: only create img elements for current and next image
+    // This significantly improves performance by not loading all images at once
+    const nextIndex = (currentImageIndex + 1) % images.length;
+
     images.forEach((photo, index) => {
         const img = document.createElement('img');
         // Use 'regular' size (~1080px) instead of 'raw' for better performance
-        img.src = photo.urls.regular;
+
+        // Only set src for current and next image (lazy loading)
+        if (index === currentImageIndex || index === nextIndex) {
+            img.src = photo.urls.regular;
+        }
+
         img.alt = `Gallery image ${index + 1}`;
         if (index === currentImageIndex) {
             img.classList.add('active');
         }
         imageContainer.appendChild(img);
     });
-    
+
     // Update photo attribution
     updatePhotoAttribution();
-    
+
     // Start rotation if this is the first page
     if (currentPage === 1) {
         startRotation();
@@ -182,14 +181,8 @@ function updatePhotoAttribution() {
 async function initGallery() {
     // Load themes first
     await loadThemes();
-    
-    // Set up hamburger menu and config overlay
-    const hamburgerMenu = document.querySelector('.hamburger-menu');
-    const configOverlay = document.querySelector('.config-overlay');
-    const closeButton = document.querySelector('.close-button');
 
     // Set initial interval value in input
-    const intervalInput = document.getElementById('interval');
     intervalInput.value = rotationInterval;
 
     hamburgerMenu.addEventListener('click', () => {
@@ -212,22 +205,18 @@ async function initGallery() {
     });
 
     // Set up theme selection with auto-save
-    const themeSelect = document.getElementById('theme');
     themeSelect.addEventListener('change', () => {
-        currentPage = 1; // Reset page counter when theme changes
         loadImages();
         showSuccessMessage();
     });
 
     // Set up surprise theme link
-    const surpriseLink = document.querySelector('.surprise-theme');
     surpriseLink.addEventListener('click', (e) => {
         e.preventDefault();
         if (themes.length === 0) {
             console.error('No themes available');
             return;
         }
-        currentPage = 1; // Reset page counter when theme changes
         const randomIndex = Math.floor(Math.random() * themes.length);
         if (themes[randomIndex]) {
             themeSelect.value = themes[randomIndex].query;
@@ -259,22 +248,21 @@ function startRotation() {
     // Clear any existing intervals
     if (intervalId) clearInterval(intervalId);
     if (progressIntervalId) clearInterval(progressIntervalId);
-    
-    const progressFill = document.querySelector('.progress-fill');
+
     progressFill.style.width = '100%';
     
     // Start progress bar animation
     startTime = Date.now();
     duration = rotationInterval * 1000;
-    
-    // Update progress bar every 10ms
+
+    // Update progress bar every 50ms (20fps - smooth but efficient)
     progressIntervalId = setInterval(() => {
         if (!isPaused) {
             const elapsed = Date.now() - startTime;
             const progress = Math.max(0, 100 - (elapsed / duration) * 100);
             progressFill.style.width = `${progress}%`;
         }
-    }, 10);
+    }, 50);
     
     // Rotate images at the specified interval
     intervalId = setInterval(() => {
@@ -286,36 +274,34 @@ function startRotation() {
 
 // Rotate to the next image
 function rotateImage() {
-    const images = document.querySelectorAll('.image-container img');
-    if (images.length === 0) return;
+    const imgElements = document.querySelectorAll('.image-container img');
+    if (imgElements.length === 0) return;
 
     // Remove active class from current image
-    images[currentImageIndex].classList.remove('active');
-    
+    imgElements[currentImageIndex].classList.remove('active');
+
     // Update current index
-    currentImageIndex = (currentImageIndex + 1) % images.length;
-    
+    currentImageIndex = (currentImageIndex + 1) % imgElements.length;
+
     // Add active class to new image
-    images[currentImageIndex].classList.add('active');
-    
+    imgElements[currentImageIndex].classList.add('active');
+
+    // Lazy load the current image if not already loaded
+    if (!imgElements[currentImageIndex].src) {
+        imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
+    }
+
+    // Preload next image
+    const nextIndex = (currentImageIndex + 1) % imgElements.length;
+    if (!imgElements[nextIndex].src) {
+        imgElements[nextIndex].src = images[nextIndex].urls.regular;
+    }
+
     // Update photo attribution
     updatePhotoAttribution();
-    
-    // Reset progress bar instantly (no animation)
-    const progressFill = document.querySelector('.progress-fill');
-    progressFill.style.transition = 'none';
-    progressFill.style.width = '100%';
-    // Force a reflow to apply the change
-    void progressFill.offsetWidth;
 
-    // Reset start time for progress bar
-    startTime = Date.now();
-    
-    // If we're at the last image and haven't reached max pages, load more
-    if (currentImageIndex === images.length - 1 && currentPage < MAX_PAGES) {
-        currentPage++;
-        loadImages(currentPage);
-    }
+    // Reset progress bar
+    resetProgressBar();
 }
 
 // Pause the rotation
@@ -334,61 +320,73 @@ function resetRotation() {
     startRotation();
 }
 
+// Helper function to reset progress bar instantly
+function resetProgressBar() {
+    progressFill.style.transition = 'none';
+    progressFill.style.width = '100%';
+    void progressFill.offsetWidth;
+    startTime = Date.now();
+}
+
 // Navigate to next image
 function nextImage() {
-    const images = document.querySelectorAll('.image-container img');
-    if (images.length === 0) return;
+    const imgElements = document.querySelectorAll('.image-container img');
+    if (imgElements.length === 0) return;
 
     // Remove active class from current image
-    images[currentImageIndex].classList.remove('active');
+    imgElements[currentImageIndex].classList.remove('active');
 
     // Move to next image
-    currentImageIndex = (currentImageIndex + 1) % images.length;
+    currentImageIndex = (currentImageIndex + 1) % imgElements.length;
 
     // Add active class to new image
-    images[currentImageIndex].classList.add('active');
+    imgElements[currentImageIndex].classList.add('active');
+
+    // Lazy load the current image if not already loaded
+    if (!imgElements[currentImageIndex].src) {
+        imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
+    }
+
+    // Preload next image
+    const nextIndex = (currentImageIndex + 1) % imgElements.length;
+    if (!imgElements[nextIndex].src) {
+        imgElements[nextIndex].src = images[nextIndex].urls.regular;
+    }
 
     // Update photo attribution
     updatePhotoAttribution();
 
     // Reset progress bar
-    const progressFill = document.querySelector('.progress-fill');
-    progressFill.style.transition = 'none';
-    progressFill.style.width = '100%';
-    void progressFill.offsetWidth;
-
-    // Reset start time for progress bar
-    startTime = Date.now();
+    resetProgressBar();
 }
 
 // Navigate to previous image
 function previousImage() {
-    const images = document.querySelectorAll('.image-container img');
-    if (images.length === 0) return;
+    const imgElements = document.querySelectorAll('.image-container img');
+    if (imgElements.length === 0) return;
 
     // Don't go back if we're at the first image
     if (currentImageIndex === 0) return;
 
     // Remove active class from current image
-    images[currentImageIndex].classList.remove('active');
+    imgElements[currentImageIndex].classList.remove('active');
 
     // Move to previous image
     currentImageIndex = currentImageIndex - 1;
 
     // Add active class to new image
-    images[currentImageIndex].classList.add('active');
+    imgElements[currentImageIndex].classList.add('active');
+
+    // Lazy load the current image if not already loaded
+    if (!imgElements[currentImageIndex].src) {
+        imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
+    }
 
     // Update photo attribution
     updatePhotoAttribution();
 
     // Reset progress bar
-    const progressFill = document.querySelector('.progress-fill');
-    progressFill.style.transition = 'none';
-    progressFill.style.width = '100%';
-    void progressFill.offsetWidth;
-
-    // Reset start time for progress bar
-    startTime = Date.now();
+    resetProgressBar();
 }
 
 // Keyboard navigation
