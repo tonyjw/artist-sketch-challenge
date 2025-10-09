@@ -3,14 +3,11 @@ const apiUrl = '/api/photos'; // Use server endpoint
 const perPage = 10;
 
 // Initialize variables
-let currentPage = 1;
 let currentImageIndex = 0;
 let images = [];
 let rotationInterval = parseInt(localStorage.getItem('rotationInterval')) || 30; // Load saved interval or use default
 let intervalId = null;
 let progressIntervalId = null;
-let currentImages = [];
-let currentAttributions = [];
 let isPaused = false;
 let successMessageTimeout = null;
 let startTime = Date.now();
@@ -66,7 +63,7 @@ async function loadThemes() {
 async function loadImages() {
   try {
     const query = themeSelect.value;
-    const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${currentPage}`);
+    const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}&per_page=${perPage}`);
     
     if (!response.ok) {
       const error = await response.json();
@@ -222,7 +219,6 @@ async function initGallery() {
     // Set up theme selection with auto-save
     const themeSelect = document.getElementById('theme');
     themeSelect.addEventListener('change', () => {
-        currentPage = 1; // Reset page counter when theme changes
         loadImages();
         showSuccessMessage();
     });
@@ -235,7 +231,6 @@ async function initGallery() {
             console.error('No themes available');
             return;
         }
-        currentPage = 1; // Reset page counter when theme changes
         const randomIndex = Math.floor(Math.random() * themes.length);
         if (themes[randomIndex]) {
             themeSelect.value = themes[randomIndex].query;
@@ -329,12 +324,6 @@ function rotateImage() {
 
     // Reset start time for progress bar
     startTime = Date.now();
-    
-    // If we're at the last image and haven't reached max pages, load more
-    if (currentImageIndex === images.length - 1 && currentPage < MAX_PAGES) {
-        currentPage++;
-        loadImages(currentPage);
-    }
 }
 
 // Pause the rotation
