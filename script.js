@@ -275,11 +275,19 @@ function rotateImage() {
     const imgElements = document.querySelectorAll('.image-container img');
     if (imgElements.length === 0) return;
 
+    // Stop if we're at the last image
+    if (currentImageIndex >= imgElements.length - 1) {
+        // Clear intervals to stop rotation
+        if (intervalId) clearInterval(intervalId);
+        if (progressIntervalId) clearInterval(progressIntervalId);
+        return;
+    }
+
     // Remove active class from current image
     imgElements[currentImageIndex].classList.remove('active');
 
     // Update current index
-    currentImageIndex = (currentImageIndex + 1) % imgElements.length;
+    currentImageIndex = currentImageIndex + 1;
 
     // Add active class to new image
     imgElements[currentImageIndex].classList.add('active');
@@ -289,10 +297,12 @@ function rotateImage() {
         imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
     }
 
-    // Preload next image
-    const nextIndex = (currentImageIndex + 1) % imgElements.length;
-    if (!imgElements[nextIndex].src) {
-        imgElements[nextIndex].src = images[nextIndex].urls.regular;
+    // Preload next image if not at the end
+    if (currentImageIndex < imgElements.length - 1) {
+        const nextIndex = currentImageIndex + 1;
+        if (!imgElements[nextIndex].src) {
+            imgElements[nextIndex].src = images[nextIndex].urls.regular;
+        }
     }
 
     // Update photo attribution
@@ -331,11 +341,14 @@ function nextImage() {
     const imgElements = document.querySelectorAll('.image-container img');
     if (imgElements.length === 0) return;
 
+    // Don't go forward if we're at the last image
+    if (currentImageIndex >= imgElements.length - 1) return;
+
     // Remove active class from current image
     imgElements[currentImageIndex].classList.remove('active');
 
     // Move to next image
-    currentImageIndex = (currentImageIndex + 1) % imgElements.length;
+    currentImageIndex = currentImageIndex + 1;
 
     // Add active class to new image
     imgElements[currentImageIndex].classList.add('active');
@@ -345,10 +358,12 @@ function nextImage() {
         imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
     }
 
-    // Preload next image
-    const nextIndex = (currentImageIndex + 1) % imgElements.length;
-    if (!imgElements[nextIndex].src) {
-        imgElements[nextIndex].src = images[nextIndex].urls.regular;
+    // Preload next image if not at the end
+    if (currentImageIndex < imgElements.length - 1) {
+        const nextIndex = currentImageIndex + 1;
+        if (!imgElements[nextIndex].src) {
+            imgElements[nextIndex].src = images[nextIndex].urls.regular;
+        }
     }
 
     // Update photo attribution
