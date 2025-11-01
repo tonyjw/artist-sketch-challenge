@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watercolor Mixing Chart Template</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        
+        .settings-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            opacity: 0.3;
+        }
+        
+        .settings-toggle:hover {
+            transform: rotate(90deg);
+            opacity: 1;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 70px;
+            left: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 999;
+            display: none;
+            min-width: 250px;
+        }
+        
+        .controls.visible {
+            display: block;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background: #2196F3;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: #0b7dda;
+        }
+        
+        #chartContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #chartContainer svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        @media print {
+            .settings-toggle,
+            .controls {
+                display: none !important;
+            }
+            
+            #chartContainer {
+                position: static;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        
+        @page {
+            margin: 0.25in;
+            size: landscape;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-toggle" onclick="toggleSettings()" title="Settings">
+        ⚙️
+    </div>
+    
+    <div class="controls" id="controls">
+        <h3 style="margin-top: 0; font-size: 16px;">Chart Settings</h3>
+        
+        <div class="control-group">
+            <label for="paperSize">Paper Size:</label>
+            <select id="paperSize" onchange="generateChart()">
+                <option value="10x14">14" × 10" (landscape)</option>
+                <option value="9x12">12" × 9" (landscape)</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="numColors">Number of Colors:</label>
+            <input type="number" id="numColors" value="10" min="4" max="20" onchange="generateChart()">
+        </div>
+        
+        <div class="control-group">
+            <button onclick="window.print()">Print/Save as PDF</button>
+        </div>
+        
+        <p style="color: #666; font-size: 12px; margin: 15px 0 0 0;">
+            Press F11 for fullscreen projection mode.
+        </p>
+    </div>
+    
+    <div id="chartContainer"></div>
+
+    <script>
+        function toggleSettings() {
+            const controls = document.getElementById('controls');
+            controls.classList.toggle('visible');
+        }
+        
+        // Close settings when clicking outside
+        document.addEventListener('click', function(event) {
+            const controls = document.getElementById('controls');
+            const toggle = document.querySelector('.settings-toggle');
+            
+            if (controls.classList.contains('visible') && 
+                !controls.contains(event.target) && 
+                !toggle.contains(event.target)) {
+                controls.classList.remove('visible');
+            }
+        });
+        
+        function generateChart() {
+            const paperSize = document.getElementById('paperSize').value;
+            const numColors = parseInt(document.getElementById('numColors').value);
+            
+            // Calculate aspect ratio based on paper size
+            let aspectRatio;
+            if (paperSize === '10x14') {
+                aspectRatio = 1344 / 960; // 14:10 landscape
+            } else {
+                aspectRatio = 1152 / 864; // 12:9 landscape
+            }
+            
+            // Use viewport dimensions for responsive sizing
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            // Calculate dimensions to fit viewport while maintaining aspect ratio
+            let width, height;
+            if (viewportWidth / viewportHeight > aspectRatio) {
+                // Viewport is wider than paper aspect ratio
+                height = viewportHeight * 0.95;
+                width = height * aspectRatio;
+            } else {
+                // Viewport is taller than paper aspect ratio
+                width = viewportWidth * 0.95;
+                height = width / aspectRatio;
+            }
+            
+            // Calculate margins and dimensions
+            const margin = width * 0.05; // 5% margin
+            const topLabelHeight = height * 0.08; // Space for color names at top
+            const leftLabelWidth = width * 0.12; // Space for color names on left
+            
+            // Available space for the grid
+            const gridWidth = width - margin * 2 - leftLabelWidth;
+            const gridHeight = height - margin * 2 - topLabelHeight;
+            
+            // Cell dimensions
+            const cellWidth = gridWidth / numColors;
+            const cellHeight = gridHeight / numColors;
+            
+            // Start building SVG
+            let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            // Background
+            svg += `<rect width="${width}" height="${height}" fill="white"/>`;
+            
+            const gridStartX = margin + leftLabelWidth;
+            const gridStartY = margin + topLabelHeight;
+            
+            // Draw grid cells
+            for (let row = 0; row < numColors; row++) {
+                for (let col = 0; col < numColors; col++) {
+                    const x = gridStartX + col * cellWidth;
+                    const y = gridStartY + row * cellHeight;
+                    
+                    svg += `<rect x="${x}" y="${y}" width="${cellWidth}" height="${cellHeight}" 
+                            fill="none" stroke="#999" stroke-width="2"/>`;
+                }
+            }
+            
+            // Draw thicker outer border
+            svg += `<rect x="${gridStartX}" y="${gridStartY}" 
+                    width="${gridWidth}" height="${gridHeight}" 
+                    fill="none" stroke="#333" stroke-width="4"/>`;
+            
+            // Label spaces for colors across top (no numbers)
+            for (let i = 0; i < numColors; i++) {
+                const x = gridStartX + i * cellWidth;
+                const y = gridStartY;
+                
+                // Color name box
+                svg += `<rect x="${x}" y="${y - topLabelHeight}" 
+                        width="${cellWidth}" height="${topLabelHeight - 5}" 
+                        fill="none" stroke="#666" stroke-width="2"/>`;
+            }
+            
+            // Label spaces for colors down left side (no numbers)
+            for (let i = 0; i < numColors; i++) {
+                const x = margin;
+                const y = gridStartY + i * cellHeight;
+                
+                // Color name box
+                svg += `<rect x="${x}" y="${y}" 
+                        width="${leftLabelWidth - 5}" height="${cellHeight}" 
+                        fill="none" stroke="#666" stroke-width="2"/>`;
+            }
+            
+            svg += '</svg>';
+            
+            document.getElementById('chartContainer').innerHTML = svg;
+        }
+        
+        // Generate initial chart
+        generateChart();
+        
+        // Regenerate chart on window resize
+        window.addEventListener('resize', generateChart);
+    </script>
+</body>
+</html>
