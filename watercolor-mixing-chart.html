@@ -65,13 +65,19 @@
             font-size: 14px;
         }
         
-        select, input {
+        select, input[type="number"] {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 14px;
             box-sizing: border-box;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 8px 0;
+            cursor: pointer;
         }
         
         button {
@@ -144,7 +150,12 @@
             <label for="numColors">Number of Colors:</label>
             <input type="number" id="numColors" value="10" min="4" max="20" onchange="generateChart()">
         </div>
-        
+
+        <div class="control-group">
+            <label for="lineWidth">Line Width: <span id="lineWidthLabel">Medium</span></label>
+            <input type="range" id="lineWidth" value="2" min="1" max="3" step="1" oninput="updateLineWidthLabel(); generateChart()">
+        </div>
+
         <div class="control-group">
             <button onclick="window.print()">Print/Save as PDF</button>
         </div>
@@ -161,19 +172,32 @@
             const controls = document.getElementById('controls');
             controls.classList.toggle('visible');
         }
-        
+
         // Close settings when clicking outside
         document.addEventListener('click', function(event) {
             const controls = document.getElementById('controls');
             const toggle = document.querySelector('.settings-toggle');
-            
-            if (controls.classList.contains('visible') && 
-                !controls.contains(event.target) && 
+
+            if (controls.classList.contains('visible') &&
+                !controls.contains(event.target) &&
                 !toggle.contains(event.target)) {
                 controls.classList.remove('visible');
             }
         });
-        
+
+        function updateLineWidthLabel() {
+            const lineWidth = document.getElementById('lineWidth').value;
+            const label = document.getElementById('lineWidthLabel');
+            const labels = ['Thin', 'Medium', 'Thick'];
+            label.textContent = labels[lineWidth - 1];
+        }
+
+        function getLineWidthPixels() {
+            const lineWidth = document.getElementById('lineWidth').value;
+            const widths = [2, 4, 6];
+            return widths[lineWidth - 1];
+        }
+
         function generateChart() {
             const paperSize = document.getElementById('paperSize').value;
             const numColors = parseInt(document.getElementById('numColors').value);
@@ -223,15 +247,18 @@
             
             const gridStartX = margin + leftLabelWidth;
             const gridStartY = margin + topLabelHeight;
-            
+
+            // Get dynamic line width for grid cells
+            const gridLineWidth = getLineWidthPixels();
+
             // Draw grid cells
             for (let row = 0; row < numColors; row++) {
                 for (let col = 0; col < numColors; col++) {
                     const x = gridStartX + col * cellWidth;
                     const y = gridStartY + row * cellHeight;
-                    
+
                     svg += `<rect x="${x}" y="${y}" width="${cellWidth}" height="${cellHeight}"
-                            fill="none" stroke="#999" stroke-width="4"/>`;
+                            fill="none" stroke="#999" stroke-width="${gridLineWidth}"/>`;
                 }
             }
 
