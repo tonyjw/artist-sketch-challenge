@@ -262,10 +262,10 @@
                 }
             }
 
-            // Draw thicker outer border
+            // Draw outer border
             svg += `<rect x="${gridStartX}" y="${gridStartY}"
                     width="${gridWidth}" height="${gridHeight}"
-                    fill="none" stroke="#333" stroke-width="8"/>`;
+                    fill="none" stroke="#333" stroke-width="${gridLineWidth}"/>`;
 
             // Label spaces for colors across top (no numbers)
             for (let i = 0; i < numColors; i++) {
@@ -275,7 +275,7 @@
                 // Color name box
                 svg += `<rect x="${x}" y="${y - topLabelHeight}"
                         width="${cellWidth}" height="${topLabelHeight - 5}"
-                        fill="none" stroke="#666" stroke-width="4"/>`;
+                        fill="none" stroke="#666" stroke-width="${gridLineWidth}"/>`;
             }
 
             // Label spaces for colors down left side (no numbers)
@@ -286,7 +286,7 @@
                 // Color name box
                 svg += `<rect x="${x}" y="${y}"
                         width="${leftLabelWidth - 5}" height="${cellHeight}"
-                        fill="none" stroke="#666" stroke-width="4"/>`;
+                        fill="none" stroke="#666" stroke-width="${gridLineWidth}"/>`;
             }
             
             svg += '</svg>';
