@@ -367,31 +367,61 @@ body {
     line-height: 1.6;
 }
 
-.landing-content .features {
-    text-align: left;
-    margin: 30px auto;
-    max-width: 500px;
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.landing-content .features h2 {
-    font-size: 1.5em;
+.tool-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.tool-card:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+}
+
+.tool-card h2 {
+    font-size: 1.8em;
     margin-bottom: 15px;
     color: #fff;
 }
 
-.landing-content .features ul {
+.tool-card .tool-description {
+    font-size: 1.05em;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+}
+
+.tool-card .tool-features {
     list-style: none;
     padding: 0;
+    margin-bottom: 25px;
+    flex-grow: 1;
 }
 
-.landing-content .features li {
+.tool-card .tool-features li {
     margin-bottom: 12px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.75);
     padding-left: 25px;
     position: relative;
+    font-size: 0.95em;
 }
 
-.landing-content .features li:before {
+.tool-card .tool-features li:before {
     content: "✓";
     position: absolute;
     left: 0;
@@ -399,21 +429,22 @@ body {
     font-weight: bold;
 }
 
-.start-button {
+.tool-button {
     display: inline-block;
-    margin-top: 30px;
-    padding: 15px 40px;
+    padding: 12px 30px;
     background-color: #4CAF50;
     color: white;
     text-decoration: none;
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-weight: bold;
     border-radius: 8px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    text-align: center;
+    align-self: center;
 }
 
-.start-button:hover {
+.tool-button:hover {
     background-color: #45a049;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
@@ -446,8 +477,21 @@ body {
         padding: 30px 20px;
     }
 
-    .start-button {
-        font-size: 1.1em;
-        padding: 12px 30px;
+    .tools-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .tool-card {
+        padding: 25px;
+    }
+
+    .tool-card h2 {
+        font-size: 1.5em;
+    }
+
+    .tool-button {
+        font-size: 1em;
+        padding: 10px 25px;
     }
 } 
