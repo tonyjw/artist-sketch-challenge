@@ -482,7 +482,7 @@
       <label for="styleGuideSelect">Choose a style guide:</label>
       <select id="styleGuideSelect">
         <option value="mid-century-modern">Mid-Century Modern</option>
-        <option value="coming-soon" disabled>Japanese Sumi-e (Coming Soon)</option>
+        <option value="japanese-sumi-e">Japanese Sumi-e & Ink Wash</option>
         <option value="coming-soon" disabled>Botanical Illustration (Coming Soon)</option>
         <option value="coming-soon" disabled>Impressionist Landscape (Coming Soon)</option>
         <option value="coming-soon" disabled>Art Nouveau (Coming Soon)</option>
@@ -805,6 +805,7 @@
 
   <div class="toast" id="toast">Color copied!</div>
 
+  <script src="style-guides-data.js"></script>
   <script>
     // Color Palettes Data
     const mcmPalettes = [
@@ -877,70 +878,6 @@
       });
     });
 
-    // Render Palettes
-    function renderPalettes() {
-      palettesGrid.innerHTML = '';
-      
-      mcmPalettes.forEach(palette => {
-        const displayColors = palette.colors.slice(0, currentColorCount);
-        
-        const paletteEl = document.createElement('div');
-        paletteEl.className = 'palette';
-        
-        const colorsHtml = displayColors.map(color => 
-          `<div class="color-swatch" style="background-color: ${color}" data-hex="${color}" onclick="copyColor('${color}')"></div>`
-        ).join('');
-        
-        paletteEl.innerHTML = `
-          <div class="palette-colors">${colorsHtml}</div>
-          <div class="palette-info">
-            <div class="palette-name">${palette.name}</div>
-            <div class="palette-description">${palette.description}</div>
-          </div>
-        `;
-        
-        palettesGrid.appendChild(paletteEl);
-      });
-    }
-
-    // Render Shapes
-    function renderShapes() {
-      const shapesGrid = document.getElementById('shapesGrid');
-      shapesGrid.innerHTML = mcmShapes.map(shape => `
-        <div class="shape-card">
-          <div class="shape-preview">${shape.svg}</div>
-          <div class="shape-name">${shape.name}</div>
-          <div class="shape-desc">${shape.desc}</div>
-        </div>
-      `).join('');
-    }
-
-    // Render Compositions
-    function renderCompositions() {
-      const compGrid = document.getElementById('compositionGrid');
-      compGrid.innerHTML = compositions.map(comp => {
-        let shapesHtml = comp.shapes.map(s => {
-          if (s.type === 'circle') {
-            return `<circle cx="${s.x}%" cy="${s.y}%" r="${s.r}" fill="${s.fill}"/>`;
-          } else if (s.type === 'rect') {
-            return `<rect x="${s.x}%" y="${s.y}%" width="${s.w}" height="${s.h}" fill="${s.fill}" transform="rotate(${s.rotate || 0} ${s.x + s.w/2} ${s.y + s.h/2})"/>`;
-          }
-        }).join('');
-        
-        return `
-          <div class="comp-example">
-            <div class="comp-preview" style="background: ${comp.bg}">
-              <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">${shapesHtml}</svg>
-            </div>
-            <div class="comp-info">
-              <div class="comp-name">${comp.name}</div>
-              <div class="comp-desc">${comp.desc}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
     // Copy Color
     function copyColor(hex) {
       navigator.clipboard.writeText(hex).then(() => {
@@ -957,10 +894,105 @@
       renderPalettes();
     });
 
+    // Style Guide Switching
+    let currentStyle = 'mid-century-modern';
+    let currentPalettes = mcmPalettes;
+    let currentShapes = mcmShapes;
+    let currentCompositions = compositions;
+
+    function switchStyleGuide(styleId) {
+      if (!styleGuidesData[styleId]) {
+        console.error('Style guide not found:', styleId);
+        return;
+      }
+
+      currentStyle = styleId;
+      const styleData = styleGuidesData[styleId];
+
+      // Update title and subtitle
+      document.getElementById('styleTitle').textContent = styleData.title;
+      document.getElementById('styleSubtitle').textContent = styleData.subtitle;
+
+      // Update data references
+      currentPalettes = styleData.palettes;
+      currentShapes = styleData.shapes;
+      currentCompositions = styleData.compositions;
+
+      // Re-render all sections
+      renderPalettes();
+      renderShapes();
+      renderCompositions();
+    }
+
+    // Update render functions to use current data
+    function renderPalettes() {
+      palettesGrid.innerHTML = '';
+
+      currentPalettes.forEach(palette => {
+        const displayColors = palette.colors.slice(0, currentColorCount);
+
+        const paletteEl = document.createElement('div');
+        paletteEl.className = 'palette';
+
+        const colorsHtml = displayColors.map(color =>
+          `<div class="color-swatch" style="background-color: ${color}" data-hex="${color}" onclick="copyColor('${color}')"></div>`
+        ).join('');
+
+        paletteEl.innerHTML = `
+          <div class="palette-colors">${colorsHtml}</div>
+          <div class="palette-info">
+            <div class="palette-name">${palette.name}</div>
+            <div class="palette-description">${palette.description}</div>
+          </div>
+        `;
+
+        palettesGrid.appendChild(paletteEl);
+      });
+    }
+
+    function renderShapes() {
+      const shapesGrid = document.getElementById('shapesGrid');
+      shapesGrid.innerHTML = currentShapes.map(shape => `
+        <div class="shape-card">
+          <div class="shape-preview">${shape.svg}</div>
+          <div class="shape-name">${shape.name}</div>
+          <div class="shape-desc">${shape.desc}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderCompositions() {
+      const compGrid = document.getElementById('compositionGrid');
+      compGrid.innerHTML = currentCompositions.map(comp => {
+        let shapesHtml = comp.shapes.map(s => {
+          if (s.type === 'circle') {
+            return `<circle cx="${s.x}%" cy="${s.y}%" r="${s.r}" fill="${s.fill}"/>`;
+          } else if (s.type === 'rect') {
+            return `<rect x="${s.x}%" y="${s.y}%" width="${s.w}" height="${s.h}" fill="${s.fill}" transform="rotate(${s.rotate || 0} ${s.x + s.w/2} ${s.y + s.h/2})"/>`;
+          }
+        }).join('');
+
+        return `
+          <div class="comp-example">
+            <div class="comp-preview" style="background: ${comp.bg}">
+              <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">${shapesHtml}</svg>
+            </div>
+            <div class="comp-info">
+              <div class="comp-name">${comp.name}</div>
+              <div class="comp-desc">${comp.desc}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Style selector event listener
+    document.getElementById('styleGuideSelect').addEventListener('change', (e) => {
+      switchStyleGuide(e.target.value);
+    });
+
     // Initialize
-    renderPalettes();
-    renderShapes();
-    renderCompositions();
+    switchStyleGuide('mid-century-modern');
   </script>
 </body>
 </html>

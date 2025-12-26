@@ -1,0 +1,88 @@
+// Style Guides Data
+// This file contains all the data for different art style guides
+
+const styleGuidesData = {
+  'mid-century-modern': {
+    title: "Mid-Century Modern",
+    subtitle: "Abstract Art Reference Guide for Watercolorists",
+    palettes: [
+      { name: "Atomic Ranch", description: "Classic suburban warmth", colors: ["#D35400", "#F39C12", "#E8D5B7", "#2C3E50", "#1ABC9C", "#ECF0F1"] },
+      { name: "Desert Sunset", description: "Southwestern influences", colors: ["#C0392B", "#E74C3C", "#F5B041", "#FAD7A0", "#784212", "#F8F1E5"] },
+      { name: "Avocado Kitchen", description: "Retro appliance vibes", colors: ["#6B8E23", "#8B9A46", "#BDB76B", "#F5DEB3", "#8B4513", "#FFF8DC"] },
+      { name: "Tiki Lounge", description: "Polynesian pop culture", colors: ["#FF6B35", "#004E64", "#25A18E", "#9FFFCB", "#7A4419", "#FFE5D9"] },
+      { name: "Scandinavian Modern", description: "Nordic minimalism", colors: ["#2C3E50", "#95A5A6", "#ECF0F1", "#E67E22", "#D4AC0D", "#FDFEFE"] },
+      { name: "Palm Springs", description: "Desert modernism", colors: ["#F06292", "#4DD0E1", "#FFF176", "#E0E0E0", "#FF8A65", "#FFFFFF"] },
+      { name: "Harvest Gold", description: "Warm metallic tones", colors: ["#DAA520", "#CD853F", "#8B7355", "#F5F5DC", "#B8860B", "#FAEBD7"] },
+      { name: "Eames Era", description: "Designer classics", colors: ["#B22222", "#2F4F4F", "#DAA520", "#F5F5F5", "#191970", "#FFFAF0"] },
+      { name: "Seafoam Dreams", description: "Coastal tranquility", colors: ["#66CDAA", "#20B2AA", "#40E0D0", "#F0FFF0", "#2F4F4F", "#FFFAFA"] },
+      { name: "Burnt Sienna", description: "Earthy sophistication", colors: ["#A0522D", "#D2691E", "#DEB887", "#FFF8DC", "#5C4033", "#FAF0E6"] },
+      { name: "Atomic Age", description: "Space race optimism", colors: ["#FF4500", "#FFD700", "#00CED1", "#2F4F4F", "#C0C0C0", "#FFFFF0"] },
+      { name: "Danish Teak", description: "Furniture inspired", colors: ["#8B4513", "#D2691E", "#F5DEB3", "#2F4F4F", "#B8860B", "#FFFAF0"] },
+      { name: "Coral Gables", description: "Tropical elegance", colors: ["#FF7F50", "#FFB6C1", "#98FB98", "#87CEEB", "#DDA0DD", "#FFFAFA"] },
+      { name: "Mustard & Olive", description: "Earth tone classics", colors: ["#FFDB58", "#808000", "#556B2F", "#F5F5DC", "#8B8000", "#FFFFF0"] },
+      { name: "Space Age", description: "Futuristic metallics", colors: ["#708090", "#C0C0C0", "#B8860B", "#2F4F4F", "#FF6347", "#F5F5F5"] },
+      { name: "Boomerang", description: "Googie architecture", colors: ["#00BFFF", "#FF69B4", "#FFD700", "#2F4F4F", "#FF4500", "#FFFAFA"] },
+      { name: "Terrazzo", description: "Flooring patterns", colors: ["#E8D5C4", "#C19A6B", "#708090", "#2F4F4F", "#BC8F8F", "#FAF0E6"] },
+      { name: "Cocktail Hour", description: "Lounge sophistication", colors: ["#2E4057", "#048A81", "#54C6EB", "#F5D547", "#8EE3EF", "#F7F7F7"] },
+      { name: "Sunburst", description: "Radiant wall decor", colors: ["#FF8C00", "#FFD700", "#FFA500", "#FFFACD", "#B8860B", "#FFF8DC"] },
+      { name: "Mod Squad", description: "Bold contrasts", colors: ["#000000", "#FFFFFF", "#FF4500", "#FFD700", "#1E90FF", "#F5F5F5"] }
+    ],
+    shapes: [
+      { name: "Boomerang", desc: "Curved asymmetric arc", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M20 80 Q10 50 30 30 Q50 10 70 20 Q60 30 55 40 Q50 55 35 70 Q25 80 20 80Z" fill="#D35400"/></svg>` },
+      { name: "Starburst", desc: "Radiating spikes from center", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><polygon points="50,5 54,40 90,50 54,60 50,95 46,60 10,50 46,40" fill="#F39C12"/></svg>` },
+      { name: "Kidney/Amoeba", desc: "Organic blob form", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="35" ry="25" fill="#1ABC9C" transform="rotate(-20 50 50)"/></svg>` },
+      { name: "Atomic Orbit", desc: "Elliptical paths with nucleus", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#2C3E50" stroke-width="2"/><ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#2C3E50" stroke-width="2" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#2C3E50" stroke-width="2" transform="rotate(120 50 50)"/><circle cx="50" cy="50" r="6" fill="#D35400"/></svg>` },
+      { name: "Diamond/Lozenge", desc: "Rotated square, often clustered", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><rect x="30" y="30" width="40" height="40" fill="#E74C3C" transform="rotate(45 50 50)"/></svg>` },
+      { name: "Triangle", desc: "Pointing up = optimism", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><polygon points="50,15 85,80 15,80" fill="#3498DB"/></svg>` },
+      { name: "Circle Cluster", desc: "Overlapping varied circles", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="35" cy="50" r="20" fill="#9B59B6" opacity="0.8"/><circle cx="55" cy="40" r="15" fill="#E74C3C" opacity="0.8"/><circle cx="60" cy="60" r="18" fill="#F39C12" opacity="0.8"/></svg>` },
+      { name: "Tapered Rectangle", desc: "Wedge or trapezoid", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><polygon points="25,75 35,25 65,25 75,75" fill="#16A085"/></svg>` },
+      { name: "Eye/Leaf", desc: "Pointed oval, almond shape", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="38" ry="18" fill="#27AE60"/><circle cx="50" cy="50" r="8" fill="#2C3E50"/></svg>` },
+      { name: "Hairpin Legs", desc: "Thin lines converging", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><line x1="30" y1="20" x2="40" y2="80" stroke="#2C3E50" stroke-width="3"/><line x1="70" y1="20" x2="60" y2="80" stroke="#2C3E50" stroke-width="3"/><line x1="35" y1="20" x2="65" y2="20" stroke="#2C3E50" stroke-width="3"/></svg>` },
+      { name: "Dots/Spheres", desc: "Scattered or grid pattern", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="25" cy="30" r="8" fill="#E74C3C"/><circle cx="50" cy="25" r="6" fill="#F39C12"/><circle cx="75" cy="35" r="7" fill="#3498DB"/><circle cx="30" cy="60" r="5" fill="#9B59B6"/><circle cx="55" cy="55" r="9" fill="#1ABC9C"/><circle cx="70" cy="70" r="6" fill="#E67E22"/></svg>` },
+      { name: "Parabola/Arc", desc: "Single curved sweep", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M15 70 Q50 10 85 70" fill="none" stroke="#D35400" stroke-width="4" stroke-linecap="round"/></svg>` }
+    ],
+    compositions: [
+      { name: "Floating Cluster", desc: "Shapes grouped off-center with generous white space", bg: "#FAF0E6", shapes: [{type: 'circle', x: 60, y: 35, r: 25, fill: '#D35400'}, {type: 'circle', x: 75, y: 55, r: 15, fill: '#F39C12'}, {type: 'rect', x: 45, y: 50, w: 20, h: 20, fill: '#2C3E50', rotate: 45}] },
+      { name: "Diagonal Flow", desc: "Elements arranged along invisible diagonal", bg: "#F5F5DC", shapes: [{type: 'circle', x: 20, y: 75, r: 18, fill: '#1ABC9C'}, {type: 'rect', x: 40, y: 45, w: 25, h: 15, fill: '#E74C3C', rotate: -15}, {type: 'circle', x: 70, y: 25, r: 12, fill: '#3498DB'}] },
+      { name: "Grounded + Float", desc: "Heavy base element with lighter floating shapes", bg: "#FFFAF0", shapes: [{type: 'rect', x: 20, y: 70, w: 60, h: 15, fill: '#2C3E50', rotate: 0}, {type: 'circle', x: 35, y: 35, r: 12, fill: '#F39C12'}, {type: 'circle', x: 60, y: 45, r: 8, fill: '#D35400'}] },
+      { name: "Radial Scatter", desc: "Elements radiating from implied center point", bg: "#F0FFF0", shapes: [{type: 'circle', x: 50, y: 50, r: 10, fill: '#E74C3C'}, {type: 'circle', x: 30, y: 30, r: 8, fill: '#3498DB'}, {type: 'circle', x: 70, y: 35, r: 6, fill: '#F39C12'}, {type: 'circle', x: 25, y: 60, r: 7, fill: '#9B59B6'}, {type: 'circle', x: 75, y: 65, r: 9, fill: '#1ABC9C'}] }
+    ]
+  },
+
+  'japanese-sumi-e': {
+    title: "Japanese Sumi-e & Ink Wash",
+    subtitle: "Minimalist East Asian Painting for Watercolorists",
+    palettes: [
+      { name: "Monochrome Values", description: "Traditional ink gradations", colors: ["#000000", "#2C2C2C", "#5A5A5A", "#888888", "#B8B8B8", "#E8E8E8"] },
+      { name: "Warm Earth Tones", description: "Sepia and brown variations", colors: ["#3E2723", "#5D4037", "#795548", "#A1887F", "#BCAAA4", "#F5F5F5"] },
+      { name: "Traditional Accents", description: "Vermillion and indigo", colors: ["#1A237E", "#303F9F", "#C62828", "#E53935", "#424242", "#FAFAFA"] },
+      { name: "Tea Ceremony", description: "Matcha and natural tones", colors: ["#33691E", "#558B2F", "#C5E1A5", "#F1F8E9", "#6D4C41", "#EFEBE9"] },
+      { name: "Cherry Blossom", description: "Soft pinks with gray-greens", colors: ["#F8BBD0", "#F48FB1", "#C5E1A5", "#A5D6A7", "#78909C", "#FFFFFF"] },
+      { name: "Autumn Leaves", description: "Rust, ochre, deep crimson", colors: ["#B71C1C", "#D32F2F", "#F57C00", "#FB8C00", "#6D4C41", "#F5F5F5"] },
+      { name: "Mountain Mist", description: "Cool grays and slate blues", colors: ["#263238", "#37474F", "#546E7A", "#90A4AE", "#CFD8DC", "#ECEFF1"] },
+      { name: "Zen Garden", description: "Stone grays, moss, sand", colors: ["#424242", "#616161", "#4CAF50", "#81C784", "#BCAAA4", "#EFEBE9"] },
+      { name: "Ink Stone", description: "Charcoal to light gray", colors: ["#212121", "#424242", "#616161", "#9E9E9E", "#BDBDBD", "#F5F5F5"] },
+      { name: "Morning Dew", description: "Pale blues and misty grays", colors: ["#B0BEC5", "#CFD8DC", "#E1F5FE", "#F1F8E9", "#FAFAFA", "#FFFFFF"] }
+    ],
+    shapes: [
+      { name: "Bamboo Stroke", desc: "Segmented vertical stems", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><line x1="50" y1="10" x2="50" y2="90" stroke="#2E7D32" stroke-width="8" stroke-linecap="round"/><line x1="45" y1="30" x2="55" y2="30" stroke="#1B5E20" stroke-width="2"/><line x1="45" y1="55" x2="55" y2="55" stroke="#1B5E20" stroke-width="2"/><line x1="45" y1="75" x2="55" y2="75" stroke="#1B5E20" stroke-width="2"/></svg>` },
+      { name: "Orchid Petal", desc: "Graceful curved petal", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M50 20 Q30 40 35 70 Q50 65 50 50 Q50 65 65 70 Q70 40 50 20Z" fill="#7B1FA2" opacity="0.7"/></svg>` },
+      { name: "Plum Blossom", desc: "Five-petaled simple flower", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="35" r="8" fill="#E91E63"/><circle cx="35" cy="50" r="8" fill="#E91E63"/><circle cx="50" cy="65" r="8" fill="#E91E63"/><circle cx="65" cy="50" r="8" fill="#E91E63"/><circle cx="50" cy="50" r="8" fill="#E91E63"/><circle cx="50" cy="50" r="4" fill="#FFC107"/></svg>` },
+      { name: "Pine Needle", desc: "Clustered angular needles", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><line x1="50" y1="50" x2="35" y2="25" stroke="#1B5E20" stroke-width="2"/><line x1="50" y1="50" x2="45" y2="25" stroke="#2E7D32" stroke-width="2"/><line x1="50" y1="50" x2="55" y2="25" stroke="#2E7D32" stroke-width="2"/><line x1="50" y1="50" x2="65" y2="25" stroke="#1B5E20" stroke-width="2"/></svg>` },
+      { name: "Mountain Silhouette", desc: "Angular peak form", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><polygon points="20,80 40,50 50,60 70,30 90,80" fill="#37474F" opacity="0.8"/></svg>` },
+      { name: "Koi Fish", desc: "Simplified fish form", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="30" ry="15" fill="#FF6F00" opacity="0.7"/><polygon points="75,50 90,45 90,55" fill="#FF6F00" opacity="0.7"/><circle cx="40" cy="47" r="3" fill="#000"/></svg>` },
+      { name: "Crane", desc: "Elegant bird silhouette", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M30 60 Q40 40 50 35 L50 70" stroke="#424242" stroke-width="3" fill="none"/><circle cx="50" cy="30" r="6" fill="#424242"/><path d="M30 65 L45 65 L50 70 L55 65 L70 65" stroke="#424242" stroke-width="2" fill="none"/></svg>` },
+      { name: "Lotus Leaf", desc: "Circular leaf with center", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#43A047" opacity="0.6"/><line x1="50" y1="50" x2="50" y2="20" stroke="#2E7D32" stroke-width="2"/><line x1="50" y1="50" x2="35" y2="35" stroke="#2E7D32" stroke-width="1"/><line x1="50" y1="50" x2="65" y2="35" stroke="#2E7D32" stroke-width="1"/></svg>` },
+      { name: "Mist/Cloud", desc: "Soft atmospheric wash", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="35" ry="20" fill="#B0BEC5" opacity="0.5"/><ellipse cx="40" cy="55" rx="25" ry="15" fill="#CFD8DC" opacity="0.4"/></svg>` },
+      { name: "Ink Splash", desc: "Expressive brush mark", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M30 50 Q40 30 60 40 Q70 50 60 65 Q45 70 30 50Z" fill="#000" opacity="0.7"/></svg>` },
+      { name: "Willow Branch", desc: "Drooping graceful branch", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M20 20 Q30 40 25 60 Q23 75 28 85" stroke="#558B2F" stroke-width="3" fill="none"/><ellipse cx="22" cy="45" rx="8" ry="3" fill="#7CB342" opacity="0.7" transform="rotate(-30 22 45)"/><ellipse cx="25" cy="65" rx="8" ry="3" fill="#7CB342" opacity="0.7" transform="rotate(-20 25 65)"/></svg>` },
+      { name: "Calligraphy Stroke", desc: "Thick-to-thin brush line", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M20 30 Q40 50 45 50 Q50 50 70 80" stroke="#000" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.8"/></svg>` }
+    ],
+    compositions: [
+      { name: "Off-Center Simplicity", desc: "Single subject placed asymmetrically with breathing room", bg: "#F5F5F5", shapes: [{type: 'circle', x: 35, y: 30, r: 15, fill: '#424242'}, {type: 'rect', x: 30, y: 48, w: 2, h: 35, fill: '#2E7D32', rotate: 0}] },
+      { name: "Diagonal Movement", desc: "Elements flow along invisible diagonal path", bg: "#FAFAFA", shapes: [{type: 'circle', x: 25, y: 25, r: 8, fill: '#E91E63'}, {type: 'circle', x: 50, y: 50, r: 6, fill: '#424242'}, {type: 'circle', x: 75, y: 75, r: 10, fill: '#558B2F'}] },
+      { name: "Heaven-Earth-Man", desc: "Triadic balance with three focal points", bg: "#F8F8F8", shapes: [{type: 'circle', x: 50, y: 20, r: 8, fill: '#90A4AE'}, {type: 'rect', x: 28, y: 65, w: 12, h: 20, fill: '#6D4C41', rotate: 0}, {type: 'circle', x: 70, y: 50, r: 12, fill: '#424242'}] },
+      { name: "Ma (Emptiness)", desc: "Minimal elements, maximum negative space", bg: "#FFFFFF", shapes: [{type: 'circle', x: 75, y: 30, r: 6, fill: '#000000'}, {type: 'rect', x: 73, y: 38, w: 1, h: 25, fill: '#2E7D32', rotate: 5}] }
+    ]
+  }
+};
