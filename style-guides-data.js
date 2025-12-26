@@ -126,5 +126,47 @@ const styleGuidesData = {
       { name: "Life Cycle", desc: "Bud to bloom to seed progression", bg: "#F5F5F5", shapes: [{type: 'circle', x: 25, y: 50, r: 4, fill: '#9E9E9E'}, {type: 'circle', x: 50, y: 50, r: 8, fill: '#EC407A'}, {type: 'circle', x: 75, y: 50, r: 5, fill: '#8D6E63'}] },
       { name: "Botanical Plate", desc: "Multiple views - whole plant, detail, cross-section", bg: "#FFFFFF", shapes: [{type: 'circle', x: 30, y: 40, r: 12, fill: '#66BB6A'}, {type: 'circle', x: 70, y: 35, r: 6, fill: '#F06292'}, {type: 'rect', x: 60, y: 60, w: 20, h: 15, fill: '#E8D5B7', rotate: 0}] }
     ]
+  },
+
+  'impressionist-landscape': {
+    title: "Impressionist Landscape",
+    subtitle: "Capturing Light and Atmosphere for Watercolorists",
+    palettes: [
+      { name: "Golden Hour", description: "Warm sunset light", colors: ["#FF6F00", "#FF8F00", "#FFA726", "#FFB74D", "#7E57C2", "#512DA8"] },
+      { name: "Blue Hour", description: "Cool twilight tones", colors: ["#283593", "#3949AB", "#5C6BC0", "#7986CB", "#F48FB1", "#F06292"] },
+      { name: "Midday Summer", description: "Bright and clear", colors: ["#1976D2", "#2196F3", "#64B5F6", "#7CB342", "#9CCC65", "#FFFFFF"] },
+      { name: "Overcast Day", description: "Soft muted light", colors: ["#78909C", "#90A4AE", "#B0BEC5", "#A5D6A7", "#81C784", "#E0E0E0"] },
+      { name: "Autumn Field", description: "Fall harvest colors", colors: ["#F57C00", "#FB8C00", "#FFA726", "#FFB74D", "#8D6E63", "#D7CCC8"] },
+      { name: "Spring Meadow", description: "Fresh greens and flowers", colors: ["#7CB342", "#9CCC65", "#C5E1A5", "#BA68C8", "#CE93D8", "#FFE082"] },
+      { name: "Water Reflections", description: "Sky mirrored in water", colors: ["#0277BD", "#0288D1", "#03A9F4", "#29B6F6", "#4FC3F7", "#E1F5FE"] },
+      { name: "Snowy Landscape", description: "Winter whites and blues", colors: ["#E3F2FD", "#BBDEFB", "#90CAF9", "#5E35B1", "#7E57C2", "#B39DDB"] },
+      { name: "Sunset Sky", description: "Vibrant evening colors", colors: ["#FF6F00", "#FF8F00", "#FFA726", "#EC407A", "#AB47BC", "#5E35B1"] },
+      { name: "Morning Mist", description: "Soft dawn light", colors: ["#FFF9C4", "#FFF59D", "#FFECB3", "#C5E1A5", "#A5D6A7", "#E0F2F1"] },
+      { name: "Vineyard", description: "Grape and wine country", colors: ["#6A1B9A", "#8E24AA", "#AB47BC", "#558B2F", "#689F38", "#F5F5DC"] },
+      { name: "Seaside", description: "Ocean and shore", colors: ["#006064", "#00838F", "#00ACC1", "#F5F5DC", "#BCAAA4", "#E0E0E0"] },
+      { name: "Forest Path", description: "Dappled woodland light", colors: ["#33691E", "#558B2F", "#689F38", "#8D6E63", "#A1887F", "#D7CCC8"] },
+      { name: "Lavender Fields", description: "Provence-inspired", colors: ["#5E35B1", "#7E57C2", "#9575CD", "#7CB342", "#9CCC65", "#E8EAF6"] },
+      { name: "Desert Sunset", description: "Warm earth and sky", colors: ["#BF360C", "#D84315", "#FF6F00", "#FF8F00", "#FFA726", "#FFE0B2"] }
+    ],
+    shapes: [
+      { name: "Cloud Mass", desc: "Soft billowing forms", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="35" cy="50" rx="20" ry="12" fill="#90CAF9" opacity="0.7"/><ellipse cx="55" cy="48" rx="18" ry="10" fill="#BBDEFB" opacity="0.7"/><ellipse cx="65" cy="52" rx="15" ry="10" fill="#E3F2FD" opacity="0.7"/></svg>` },
+      { name: "Tree Canopy", desc: "Loose foliage mass", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="40" r="22" fill="#7CB342" opacity="0.8"/><circle cx="38" cy="45" r="15" fill="#9CCC65" opacity="0.7"/><circle cx="62" cy="45" r="15" fill="#689F38" opacity="0.7"/><rect x="47" y="60" width="6" height="25" fill="#6D4C41"/></svg>` },
+      { name: "Water Ripple", desc: "Horizontal strokes", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M20 45 Q30 42 40 45 Q50 48 60 45 Q70 42 80 45" stroke="#0288D1" stroke-width="2" fill="none" opacity="0.7"/><path d="M20 55 Q30 52 40 55 Q50 58 60 55 Q70 52 80 55" stroke="#03A9F4" stroke-width="2" fill="none" opacity="0.6"/><path d="M20 65 Q30 62 40 65 Q50 68 60 65 Q70 62 80 65" stroke="#4FC3F7" stroke-width="2" fill="none" opacity="0.5"/></svg>` },
+      { name: "Horizon Line", desc: "Land meets sky", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="50" fill="#90CAF9"/><rect x="0" y="50" width="100" height="50" fill="#9CCC65"/><line x1="0" y1="50" x2="100" y2="50" stroke="#7CB342" stroke-width="1" opacity="0.5"/></svg>` },
+      { name: "Broken Color", desc: "Dappled light effect", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><rect x="25" y="25" width="12" height="12" fill="#FFB74D"/><rect x="42" y="30" width="10" height="10" fill="#FFA726"/><rect x="58" y="28" width="14" height="14" fill="#FF8F00"/><rect x="30" y="45" width="11" height="11" fill="#FFA726"/><rect x="50" y="48" width="13" height="13" fill="#FFB74D"/><rect x="68" y="50" width="9" height="9" fill="#FF8F00"/></svg>` },
+      { name: "Path Perspective", desc: "Receding pathway", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M30 90 L45 30 L55 30 L70 90 Z" fill="#8D6E63" opacity="0.6"/></svg>` },
+      { name: "Brushstroke Sky", desc: "Loose horizontal marks", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="8" fill="#FF8F00" opacity="0.7"/><rect x="20" y="38" width="65" height="6" fill="#FFA726" opacity="0.6"/><rect x="18" y="48" width="68" height="7" fill="#FFB74D" opacity="0.5"/></svg>` },
+      { name: "Flower Field", desc: "Impressionistic blooms", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="30" cy="50" r="5" fill="#EC407A"/><circle cx="50" cy="45" r="6" fill="#F06292"/><circle cx="70" cy="52" r="5" fill="#F48FB1"/><circle cx="40" cy="60" r="4" fill="#EC407A"/><circle cx="60" cy="58" r="5" fill="#F06292"/><rect x="0" y="70" width="100" height="30" fill="#7CB342"/></svg>` },
+      { name: "Building Mass", desc: "Simplified architecture", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><rect x="25" y="40" width="20" height="40" fill="#BCAAA4"/><rect x="50" y="35" width="25" height="45" fill="#A1887F"/><polygon points="25,40 35,25 45,40" fill="#8D6E63"/><polygon points="50,35 62.5,22 75,35" fill="#6D4C41"/></svg>` },
+      { name: "Shadow Pattern", desc: "Diagonal cast shadows", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><polygon points="30,50 50,70 60,60 40,40" fill="#5E35B1" opacity="0.4"/><polygon points="50,30 70,50 80,40 60,20" fill="#7E57C2" opacity="0.3"/></svg>` },
+      { name: "Grass Texture", desc: "Vertical dash marks", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><line x1="25" y1="60" x2="25" y2="75" stroke="#558B2F" stroke-width="2"/><line x1="35" y1="55" x2="35" y2="73" stroke="#689F38" stroke-width="2"/><line x1="45" y1="58" x2="45" y2="76" stroke="#7CB342" stroke-width="2"/><line x1="55" y1="62" x2="55" y2="74" stroke="#8BC34A" stroke-width="2"/><line x1="65" y1="56" x2="65" y2="75" stroke="#689F38" stroke-width="2"/><line x1="75" y1="60" x2="75" y2="77" stroke="#558B2F" stroke-width="2"/></svg>` },
+      { name: "Sunlight Burst", desc: "Radiating light", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="30" r="12" fill="#FFF59D" opacity="0.9"/><line x1="50" y1="15" x2="50" y2="5" stroke="#FFEB3B" stroke-width="2" opacity="0.7"/><line x1="65" y1="20" x2="72" y2="13" stroke="#FFF176" stroke-width="2" opacity="0.6"/><line x1="35" y1="20" x2="28" y2="13" stroke="#FFF176" stroke-width="2" opacity="0.6"/><line x1="70" y1="30" x2="80" y2="30" stroke="#FFEB3B" stroke-width="2" opacity="0.7"/><line x1="30" y1="30" x2="20" y2="30" stroke="#FFEB3B" stroke-width="2" opacity="0.7"/></svg>` }
+    ],
+    compositions: [
+      { name: "Rule of Thirds Sky", desc: "Horizon at lower third with expansive sky", bg: "#E3F2FD", shapes: [{type: 'rect', x: 0, y: 67, w: 100, h: 33, fill: '#7CB342', rotate: 0}, {type: 'circle', x: 25, y: 25, r: 15, fill: '#FFF59D'}] },
+      { name: "Atmospheric Depth", desc: "Cool distant, warm foreground", bg: "#B3E5FC", shapes: [{type: 'rect', x: 0, y: 70, w: 100, h: 30, fill: '#FF8F00', rotate: 0}, {type: 'rect', x: 0, y: 50, w: 100, h: 20, fill: '#9CCC65', rotate: 0}] },
+      { name: "Path Leading In", desc: "Diagonal leads eye into distance", bg: "#C5E1A5", shapes: [{type: 'rect', x: 35, y: 30, w: 8, h: 10, fill: '#8D6E63', rotate: 0}, {type: 'rect', x: 40, y: 45, w: 12, h: 15, fill: '#A1887F', rotate: 0}, {type: 'rect', x: 42, y: 65, w: 16, h: 20, fill: '#BCAAA4', rotate: 0}] },
+      { name: "Water Reflection", desc: "Sky colors mirrored below horizon", bg: "#FFA726", shapes: [{type: 'rect', x: 0, y: 0, w: 100, h: 45, fill: '#5E35B1', rotate: 0}, {type: 'rect', x: 0, y: 55, w: 100, h: 45, fill: '#7E57C2', rotate: 0}, {type: 'rect', x: 0, y: 45, w: 100, h: 10, fill: '#689F38', rotate: 0}] }
+    ]
   }
 };
