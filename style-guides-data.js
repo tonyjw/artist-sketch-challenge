@@ -168,5 +168,47 @@ const styleGuidesData = {
       { name: "Path Leading In", desc: "Diagonal leads eye into distance", bg: "#C5E1A5", shapes: [{type: 'rect', x: 35, y: 30, w: 8, h: 10, fill: '#8D6E63', rotate: 0}, {type: 'rect', x: 40, y: 45, w: 12, h: 15, fill: '#A1887F', rotate: 0}, {type: 'rect', x: 42, y: 65, w: 16, h: 20, fill: '#BCAAA4', rotate: 0}] },
       { name: "Water Reflection", desc: "Sky colors mirrored below horizon", bg: "#FFA726", shapes: [{type: 'rect', x: 0, y: 0, w: 100, h: 45, fill: '#5E35B1', rotate: 0}, {type: 'rect', x: 0, y: 55, w: 100, h: 45, fill: '#7E57C2', rotate: 0}, {type: 'rect', x: 0, y: 45, w: 100, h: 10, fill: '#689F38', rotate: 0}] }
     ]
+  },
+
+  'art-nouveau': {
+    title: "Art Nouveau & Arts & Crafts",
+    subtitle: "Organic Elegance and Decorative Beauty for Watercolorists",
+    palettes: [
+      { name: "Mucha Jewels", description: "Muted golds and pastels", colors: ["#D4AF37", "#C19A6B", "#F8BBD0", "#CE93D8", "#A5D6A7", "#FFF9C4"] },
+      { name: "Peacock Feather", description: "Iridescent blues and greens", colors: ["#006064", "#00838F", "#00ACC1", "#7B1FA2", "#9C27B0", "#FFD700"] },
+      { name: "Wisteria Vine", description: "Purple cascade", colors: ["#7B1FA2", "#9C27B0", "#BA68C8", "#CE93D8", "#7CB342", "#F5F5F5"] },
+      { name: "Art Nouveau Poster", description: "Period advertising colors", colors: ["#BF360C", "#D84315", "#808000", "#9E9D24", "#D4AF37", "#F5F5DC"] },
+      { name: "William Morris", description: "Arts & Crafts palette", colors: ["#B71C1C", "#C62828", "#2E7D32", "#388E3C", "#D4AF37", "#F5F5DC"] },
+      { name: "Glasgow Rose", description: "Mackintosh-inspired", colors: ["#F8BBD0", "#F48FB1", "#C5E1A5", "#A5D6A7", "#90A4AE", "#FAFAFA"] },
+      { name: "Tiffany Glass", description: "Stained glass hues", colors: ["#0D47A1", "#1976D2", "#2E7D32", "#558B2F", "#FF6F00", "#C62828"] },
+      { name: "Belle Époque", description: "Parisian elegance", colors: ["#F5F5DC", "#F8BBD0", "#C5E1A5", "#D4AF37", "#8D6E63", "#FAFAFA"] },
+      { name: "Iris Garden", description: "Deep purples and golds", colors: ["#4A148C", "#6A1B9A", "#7B1FA2", "#FBC02D", "#F9A825", "#E8EAF6"] },
+      { name: "Copper & Patina", description: "Metallic oxidation", colors: ["#BF360C", "#D84315", "#00695C", "#00897B", "#8D6E63", "#D7CCC8"] },
+      { name: "Poppy Field", description: "Red blooms and stems", colors: ["#B71C1C", "#C62828", "#D32F2F", "#558B2F", "#7CB342", "#FFF9C4"] },
+      { name: "Stained Glass Jewels", description: "Translucent colors", colors: ["#C62828", "#7B1FA2", "#1976D2", "#F57C00", "#FBC02D", "#424242"] },
+      { name: "Autumn Tapestry", description: "Woven fall tones", colors: ["#BF360C", "#D84315", "#F57C00", "#FBC02D", "#558B2F", "#8D6E63"] },
+      { name: "Art Deco Transition", description: "Geometric elegance", colors: ["#212121", "#424242", "#D4AF37", "#F5F5DC", "#006064", "#FAFAFA"] },
+      { name: "Organic Forms", description: "Nature-inspired neutrals", colors: ["#6D4C41", "#8D6E63", "#A1887F", "#C5E1A5", "#A5D6A7", "#F5F5DC"] }
+    ],
+    shapes: [
+      { name: "Whiplash Curve", desc: "Signature S-curve", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M30 80 Q20 50 40 30 Q60 10 70 25" stroke="#6A1B9A" stroke-width="4" fill="none" stroke-linecap="round"/></svg>` },
+      { name: "Iris Flower", desc: "Stylized bloom", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M50 30 Q40 40 45 55" fill="#7B1FA2" opacity="0.8"/><path d="M50 30 Q60 40 55 55" fill="#9C27B0" opacity="0.8"/><path d="M50 30 Q50 45 50 60" fill="#BA68C8" opacity="0.7"/><line x1="50" y1="60" x2="50" y2="85" stroke="#558B2F" stroke-width="2"/></svg>` },
+      { name: "Peacock Eye", desc: "Feather motif", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="20" ry="25" fill="#00ACC1" opacity="0.7"/><ellipse cx="50" cy="50" rx="12" ry="15" fill="#7B1FA2" opacity="0.8"/><circle cx="50" cy="50" r="5" fill="#FFD700"/></svg>` },
+      { name: "Flowing Hair", desc: "Decorative waves", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M20 30 Q35 25 50 30 Q65 35 80 30" stroke="#8D6E63" stroke-width="3" fill="none"/><path d="M20 45 Q35 40 50 45 Q65 50 80 45" stroke="#A1887F" stroke-width="3" fill="none"/><path d="M20 60 Q35 55 50 60 Q65 65 80 60" stroke="#8D6E63" stroke-width="3" fill="none"/></svg>` },
+      { name: "Poppy Bloom", desc: "Red flower", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="45" cy="45" r="12" fill="#C62828" opacity="0.8"/><circle cx="55" cy="45" r="12" fill="#C62828" opacity="0.8"/><circle cx="50" cy="38" r="12" fill="#D32F2F" opacity="0.8"/><circle cx="50" cy="52" r="12" fill="#D32F2F" opacity="0.8"/><circle cx="50" cy="45" r="6" fill="#212121"/><line x1="50" y1="58" x2="50" y2="85" stroke="#558B2F" stroke-width="2"/></svg>` },
+      { name: "Decorative Border", desc: "Repeating pattern element", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="25" cy="50" r="8" fill="#D4AF37"/><circle cx="50" cy="50" r="8" fill="#D4AF37"/><circle cx="75" cy="50" r="8" fill="#D4AF37"/><path d="M33 50 Q40 40 50 50" stroke="#C19A6B" stroke-width="2" fill="none"/><path d="M58 50 Q65 40 75 50" stroke="#C19A6B" stroke-width="2" fill="none"/></svg>` },
+      { name: "Vine Tendril", desc: "Curling plant", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M25 75 Q30 60 35 50 Q40 40 48 35 Q58 28 68 25" stroke="#558B2F" stroke-width="3" fill="none"/><ellipse cx="30" cy="65" rx="5" ry="8" fill="#7CB342" transform="rotate(-20 30 65)"/><ellipse cx="42" cy="45" rx="5" ry="8" fill="#7CB342" transform="rotate(-30 42 45)"/><ellipse cx="58" cy="32" rx="5" ry="8" fill="#7CB342" transform="rotate(-40 58 32)"/></svg>` },
+      { name: "Stained Glass Panel", desc: "Geometric divisions", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><rect x="25" y="25" width="20" height="50" fill="#1976D2" opacity="0.7" stroke="#424242" stroke-width="2"/><rect x="50" y="25" width="25" height="50" fill="#C62828" opacity="0.7" stroke="#424242" stroke-width="2"/><circle cx="37" cy="50" r="8" fill="#FBC02D" opacity="0.8"/></svg>` },
+      { name: "Art Nouveau Frame", desc: "Ornamental corner", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M20 20 Q30 20 35 25 Q40 30 40 40" stroke="#8D6E63" stroke-width="3" fill="none"/><path d="M20 20 Q20 30 25 35 Q30 40 40 40" stroke="#8D6E63" stroke-width="3" fill="none"/><circle cx="28" cy="28" r="4" fill="#D4AF37"/></svg>` },
+      { name: "Elongated Figure", desc: "Vertical emphasis", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="45" rx="15" ry="35" fill="#F8BBD0" opacity="0.7"/><circle cx="50" cy="20" r="8" fill="#F48FB1"/></svg>` },
+      { name: "Dragonfly", desc: "Art Nouveau insect", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="6" ry="18" fill="#00838F"/><ellipse cx="35" cy="40" rx="12" ry="5" fill="#00ACC1" opacity="0.6" transform="rotate(-20 35 40)"/><ellipse cx="65" cy="40" rx="12" ry="5" fill="#00ACC1" opacity="0.6" transform="rotate(20 65 40)"/><ellipse cx="35" cy="55" rx="10" ry="4" fill="#4DD0E1" opacity="0.5" transform="rotate(-15 35 55)"/><ellipse cx="65" cy="55" rx="10" ry="4" fill="#4DD0E1" opacity="0.5" transform="rotate(15 65 55)"/></svg>` },
+      { name: "Glasgow Rose", desc: "Mackintosh motif", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="50" r="18" fill="none" stroke="#F48FB1" stroke-width="2"/><circle cx="50" cy="50" r="12" fill="none" stroke="#F8BBD0" stroke-width="2"/><circle cx="50" cy="50" r="6" fill="#F06292"/><line x1="50" y1="32" x2="50" y2="20" stroke="#90A4AE" stroke-width="1"/><line x1="50" y1="68" x2="50" y2="80" stroke="#90A4AE" stroke-width="1"/><line x1="32" y1="50" x2="20" y2="50" stroke="#90A4AE" stroke-width="1"/><line x1="68" y1="50" x2="80" y2="50" stroke="#90A4AE" stroke-width="1"/></svg>` }
+    ],
+    compositions: [
+      { name: "Vertical Elegance", desc: "Elongated vertical format with flowing elements", bg: "#F5F5DC", shapes: [{type: 'circle', x: 50, y: 30, r: 12, fill: '#7B1FA2'}, {type: 'rect', x: 48, y: 45, w: 4, h: 40, fill: '#558B2F', rotate: 0}] },
+      { name: "Symmetrical Frame", desc: "Mirrored decorative borders", bg: "#FAFAFA", shapes: [{type: 'circle', x: 25, y: 50, r: 8, fill: '#D4AF37'}, {type: 'circle', x: 75, y: 50, r: 8, fill: '#D4AF37'}, {type: 'rect', x: 40, y: 45, w: 20, h: 10, fill: '#F8BBD0', rotate: 0}] },
+      { name: "Organic Flow", desc: "Asymmetric curves and natural forms", bg: "#F5F5F5", shapes: [{type: 'circle', x: 35, y: 40, r: 15, fill: '#C62828'}, {type: 'circle', x: 65, y: 60, r: 12, fill: '#7B1FA2'}, {type: 'rect', x: 30, y: 58, w: 3, h: 25, fill: '#558B2F', rotate: 15}] },
+      { name: "Decorative Panel", desc: "Flat pattern with integrated text space", bg: "#FFF9C4", shapes: [{type: 'rect', x: 20, y: 20, w: 60, h: 60, fill: 'none', rotate: 0}, {type: 'circle', x: 30, y: 30, r: 6, fill: '#1976D2'}, {type: 'circle', x: 70, y: 30, r: 6, fill: '#C62828'}, {type: 'circle', x: 30, y: 70, r: 6, fill: '#F57C00'}, {type: 'circle', x: 70, y: 70, r: 6, fill: '#7B1FA2'}] }
+    ]
   }
 };
