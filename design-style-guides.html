@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mid-Century Modern Art Guide</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f0e8;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #2C3E50 0%, #1a252f 100%);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #F39C12;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    .style-selector {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .style-selector label {
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .style-selector select {
+      padding: 10px 20px;
+      border: 2px solid #F39C12;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.95);
+      color: #2d3436;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 250px;
+    }
+
+    .style-selector select:hover {
+      background-color: white;
+      border-color: #D35400;
+    }
+
+    .style-selector select:focus {
+      outline: none;
+      border-color: #D35400;
+      box-shadow: 0 0 0 3px rgba(211, 84, 0, 0.2);
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-tab {
+      padding: 10px 20px;
+      border: none;
+      background: #f5f0e8;
+      color: #2d3436;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab:hover {
+      background: #e8e3db;
+    }
+
+    .nav-tab.active {
+      background: #D35400;
+      color: white;
+    }
+
+    .section {
+      display: none;
+      padding: 40px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: #2d3436;
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    /* Color Palettes Section */
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    label {
+      color: #2d3436;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    input[type="range"] {
+      width: 120px;
+      accent-color: #d35400;
+    }
+
+    .range-value {
+      min-width: 24px;
+      text-align: center;
+      font-weight: 600;
+      color: #d35400;
+    }
+
+    .palettes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .palette {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .palette:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+
+    .palette-colors {
+      display: flex;
+      height: 100px;
+    }
+
+    .color-swatch {
+      flex: 1;
+      cursor: pointer;
+      position: relative;
+      transition: flex 0.3s ease;
+    }
+
+    .color-swatch:hover {
+      flex: 1.5;
+    }
+
+    .color-swatch::after {
+      content: attr(data-hex);
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .color-swatch:hover::after {
+      opacity: 1;
+    }
+
+    .palette-info {
+      padding: 14px 18px;
+    }
+
+    .palette-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #2d3436;
+      margin-bottom: 2px;
+    }
+
+    .palette-description {
+      font-size: 0.8rem;
+      color: #636e72;
+    }
+
+    /* Design Guide Sections */
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .guide-card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .guide-card h3 {
+      color: #D35400;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .guide-card h3 .icon {
+      font-size: 1.4rem;
+    }
+
+    .guide-card p {
+      color: #4a4a4a;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    .guide-card ul {
+      color: #4a4a4a;
+      font-size: 0.9rem;
+      padding-left: 20px;
+    }
+
+    .guide-card li {
+      margin-bottom: 8px;
+    }
+
+    .tip-box {
+      background: #fff8e7;
+      border-left: 4px solid #F39C12;
+      padding: 14px 18px;
+      margin-top: 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+      color: #5d4e37;
+    }
+
+    .tip-box strong {
+      color: #D35400;
+    }
+
+    /* Shapes Section */
+    .shapes-display {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .shape-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .shape-preview {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .shape-preview svg {
+      max-width: 90px;
+      max-height: 90px;
+    }
+
+    .shape-name {
+      font-weight: 600;
+      color: #2d3436;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    .shape-desc {
+      font-size: 0.8rem;
+      color: #636e72;
+    }
+
+    /* Values Section */
+    .value-scale {
+      display: flex;
+      gap: 4px;
+      margin: 20px 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .value-step {
+      flex: 1;
+      height: 60px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .composition-examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 30px;
+    }
+
+    .comp-example {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .comp-preview {
+      height: 180px;
+      position: relative;
+    }
+
+    .comp-info {
+      padding: 16px;
+    }
+
+    .comp-name {
+      font-weight: 600;
+      color: #2d3436;
+      margin-bottom: 6px;
+    }
+
+    .comp-desc {
+      font-size: 0.85rem;
+      color: #636e72;
+    }
+
+    /* Watercolor Tips */
+    .technique-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .technique-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .technique-card h4 {
+      color: #2C3E50;
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .technique-card p {
+      color: #4a4a4a;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .pigment-suggestion {
+      background: #f0f4f8;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+
+    .pigment-suggestion strong {
+      color: #D35400;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #2d3436;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .nav-tabs {
+        gap: 4px;
+        padding: 12px;
+      }
+
+      .nav-tab {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+      }
+
+      .guide-grid, .shapes-display {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1 id="styleTitle">Mid-Century Modern</h1>
+    <p class="subtitle" id="styleSubtitle">Abstract Art Reference Guide for Watercolorists</p>
+    <div class="style-selector">
+      <label for="styleGuideSelect">Choose a style guide:</label>
+      <select id="styleGuideSelect">
+        <option value="mid-century-modern">Mid-Century Modern</option>
+        <option value="coming-soon" disabled>Japanese Sumi-e (Coming Soon)</option>
+        <option value="coming-soon" disabled>Botanical Illustration (Coming Soon)</option>
+        <option value="coming-soon" disabled>Impressionist Landscape (Coming Soon)</option>
+        <option value="coming-soon" disabled>Art Nouveau (Coming Soon)</option>
+        <option value="coming-soon" disabled>Abstract Expressionism (Coming Soon)</option>
+        <option value="coming-soon" disabled>Urban Sketching (Coming Soon)</option>
+        <option value="coming-soon" disabled>Minimalist Geometric (Coming Soon)</option>
+        <option value="coming-soon" disabled>Atmospheric Watercolor (Coming Soon)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-section="palettes">Color Palettes</button>
+    <button class="nav-tab" data-section="shapes">Signature Shapes</button>
+    <button class="nav-tab" data-section="values">Values & Composition</button>
+    <button class="nav-tab" data-section="watercolor">Watercolor Techniques</button>
+    <button class="nav-tab" data-section="principles">Design Principles</button>
+  </div>
+
+  <!-- COLOR PALETTES SECTION -->
+  <div class="section active" id="palettes">
+    <h2 class="section-title">Color Palettes</h2>
+    
+    <div class="controls">
+      <div class="control-group">
+        <label for="colorCount">Colors per palette:</label>
+        <input type="range" id="colorCount" min="2" max="6" value="4">
+        <span class="range-value" id="colorCountValue">4</span>
+      </div>
+    </div>
+
+    <div class="palettes-container" id="palettesGrid"></div>
+    
+    <div class="guide-grid" style="margin-top: 40px;">
+      <div class="guide-card">
+        <h3><span class="icon">🎨</span> MCM Color Characteristics</h3>
+        <p>Mid-century modern palettes favor saturated but not garish colors. The era embraced optimism through warmth while maintaining sophistication.</p>
+        <ul>
+          <li><strong>Warm dominants:</strong> Burnt orange, mustard, harvest gold, terra cotta</li>
+          <li><strong>Cool accents:</strong> Teal, seafoam, turquoise, slate blue</li>
+          <li><strong>Earthy neutrals:</strong> Olive, avocado, chocolate brown, taupe</li>
+          <li><strong>High contrast pops:</strong> Black, white, coral pink</li>
+        </ul>
+      </div>
+      <div class="guide-card">
+        <h3><span class="icon">💧</span> Watercolor Mixing Notes</h3>
+        <p>Many MCM colors require thoughtful mixing. Avoid muddy results by limiting palette complexity.</p>
+        <ul>
+          <li><strong>Burnt Orange:</strong> Pyrrol Orange + touch of Burnt Sienna</li>
+          <li><strong>Mustard:</strong> Yellow Ochre + Raw Sienna, or QBO</li>
+          <li><strong>Avocado:</strong> Sap Green + Yellow Ochre + Payne's Gray</li>
+          <li><strong>Teal:</strong> Phthalo Blue (GS) + Viridian or Phthalo Green</li>
+        </ul>
+        <div class="tip-box">
+          <strong>Tip:</strong> Create a limited palette of 4-5 colors that mix well together. MCM art often uses harmonious, intentional color relationships rather than many disparate hues.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHAPES SECTION -->
+  <div class="section" id="shapes">
+    <h2 class="section-title">Signature MCM Shapes</h2>
+    
+    <div class="shapes-display" id="shapesGrid"></div>
+
+    <div class="guide-grid">
+      <div class="guide-card">
+        <h3><span class="icon">✏️</span> Drawing These Shapes</h3>
+        <p>MCM shapes feel organic yet deliberate. They suggest motion and optimism without being chaotic.</p>
+        <ul>
+          <li><strong>Sketch loosely first</strong> — imperfect curves feel more authentic</li>
+          <li><strong>Vary scale dramatically</strong> — pair tiny dots with large swoops</li>
+          <li><strong>Overlap shapes</strong> — creates depth and visual interest</li>
+          <li><strong>Leave breathing room</strong> — negative space is compositional</li>
+        </ul>
+        <div class="tip-box">
+          <strong>Tip:</strong> Use a light pencil sketch, then paint directly without hard outlines. MCM graphics had crisp edges, but watercolor interpretations benefit from soft transitions.
+        </div>
+      </div>
+      <div class="guide-card">
+        <h3><span class="icon">🔄</span> Shape Combinations</h3>
+        <p>Classic MCM compositions layer multiple shape families together:</p>
+        <ul>
+          <li><strong>Atomic + Geometric:</strong> Starbursts behind clean rectangles</li>
+          <li><strong>Organic + Linear:</strong> Boomerangs with thin connecting lines</li>
+          <li><strong>Repeating + Singular:</strong> Field of dots with one bold kidney shape</li>
+          <li><strong>Floating + Grounded:</strong> Abstract shapes above a horizon line</li>
+        </ul>
+        <p style="margin-top: 12px;">Aim for 2-3 shape families per composition to maintain cohesion without monotony.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUES SECTION -->
+  <div class="section" id="values">
+    <h2 class="section-title">Values & Composition</h2>
+
+    <div class="guide-grid">
+      <div class="guide-card">
+        <h3><span class="icon">◐</span> Value Structure in MCM</h3>
+        <p>MCM artwork typically uses a <strong>high-key to mid-tone range</strong> with selective dark accents. Unlike dramatic chiaroscuro, values stay relatively compressed.</p>
+        
+        <div class="value-scale">
+          <div class="value-step" style="background: #1a1a1a; color: white;">1</div>
+          <div class="value-step" style="background: #404040; color: white;">2</div>
+          <div class="value-step" style="background: #666666; color: white;">3</div>
+          <div class="value-step" style="background: #8c8c8c;">4</div>
+          <div class="value-step" style="background: #b3b3b3;">5</div>
+          <div class="value-step" style="background: #d4d4d4;">6</div>
+          <div class="value-step" style="background: #e8e8e8;">7</div>
+          <div class="value-step" style="background: #f5f5f5;">8</div>
+        </div>
+        
+        <p><strong>Common MCM value distribution:</strong></p>
+        <ul>
+          <li>Background: Values 6-8 (light, airy)</li>
+          <li>Main shapes: Values 3-5 (saturated mid-tones)</li>
+          <li>Accents: Values 1-2 (sparingly, for punch)</li>
+        </ul>
+      </div>
+      
+      <div class="guide-card">
+        <h3><span class="icon">⚖️</span> Balance Principles</h3>
+        <p>MCM favors <strong>asymmetrical balance</strong> — visual weight distributed unevenly but harmoniously.</p>
+        <ul>
+          <li><strong>Rule of thirds:</strong> Place focal elements off-center</li>
+          <li><strong>Counter-balance:</strong> Large shape left → small cluster right</li>
+          <li><strong>Diagonal flow:</strong> Eye moves corner to corner</li>
+          <li><strong>Ground vs. float:</strong> Some elements anchored, others drifting</li>
+        </ul>
+        <div class="tip-box">
+          <strong>Watercolor approach:</strong> Plan your lightest areas first (preserve paper). Layer mid-tones wet-on-dry for crisp MCM edges, or wet-in-wet for softer interpretations.
+        </div>
+      </div>
+    </div>
+
+    <h3 style="text-align: center; margin: 40px 0 20px; color: #2d3436; font-weight: 400;">Composition Templates</h3>
+    
+    <div class="composition-examples" id="compositionGrid"></div>
+  </div>
+
+  <!-- WATERCOLOR TECHNIQUES SECTION -->
+  <div class="section" id="watercolor">
+    <h2 class="section-title">Watercolor Techniques for MCM Style</h2>
+
+    <div class="technique-grid">
+      <div class="technique-card">
+        <h4>🎯 Achieving Flat Washes</h4>
+        <p>MCM graphics often featured flat, even color fields. To achieve this in watercolor:</p>
+        <ul>
+          <li>Mix more paint than you think you need</li>
+          <li>Work on dry paper with a loaded brush</li>
+          <li>Tilt your board and work top-to-bottom</li>
+          <li>Don't go back into drying washes</li>
+        </ul>
+        <div class="pigment-suggestion">
+          <strong>Best pigments for flat washes:</strong> Sedimentary pigments (Yellow Ochre, Raw Sienna, Cerulean) settle evenly. Avoid staining granulators for flat work.
+        </div>
+      </div>
+
+      <div class="technique-card">
+        <h4>✂️ Hard Edges & Crisp Shapes</h4>
+        <p>The MCM aesthetic features defined shapes. Strategies:</p>
+        <ul>
+          <li><strong>Wet-on-dry:</strong> Paint onto completely dry paper/layers</li>
+          <li><strong>Masking fluid:</strong> Preserve whites and create sharp boundaries</li>
+          <li><strong>Tape edges:</strong> Artist tape for geometric precision</li>
+          <li><strong>Negative painting:</strong> Paint around shapes to define them</li>
+        </ul>
+        <div class="pigment-suggestion">
+          <strong>Edge tip:</strong> Staining pigments (Phthalo Blue, Quinacridone) create harder edges. Lift-able pigments (Cobalt, Earth tones) allow edge softening if needed.
+        </div>
+      </div>
+
+      <div class="technique-card">
+        <h4>🌊 Softened MCM Interpretation</h4>
+        <p>A watercolor-native approach that suggests MCM while embracing the medium:</p>
+        <ul>
+          <li>Let shapes bleed slightly at edges</li>
+          <li>Allow gentle granulation texture</li>
+          <li>Use wet-in-wet for backgrounds, wet-on-dry for focal shapes</li>
+          <li>Embrace happy accidents as "atomic" textures</li>
+        </ul>
+        <div class="pigment-suggestion">
+          <strong>Granulating pairs:</strong> Cobalt Blue + Burnt Sienna, Ultramarine + Raw Umber, Cerulean + any earth tone. Creates subtle texture that adds interest.
+        </div>
+      </div>
+
+      <div class="technique-card">
+        <h4>🖌️ Recommended Palette Setup</h4>
+        <p>A versatile MCM-friendly watercolor palette:</p>
+        <ul>
+          <li><strong>Warm:</strong> Pyrrol Orange, Quinacridone Burnt Orange, Yellow Ochre</li>
+          <li><strong>Cool:</strong> Phthalo Blue GS, Viridian or Phthalo Green</li>
+          <li><strong>Earth:</strong> Burnt Sienna, Raw Umber</li>
+          <li><strong>Neutral:</strong> Payne's Gray or Neutral Tint</li>
+        </ul>
+        <div class="pigment-suggestion">
+          <strong>Daniel Smith picks:</strong> QBO (Quinacridone Burnt Orange), Undersea Green, Buff Titanium for that creamy off-white, Monte Amiata Natural Sienna.
+        </div>
+      </div>
+
+      <div class="technique-card">
+        <h4>📐 Paper Considerations</h4>
+        <p>Paper choice affects your MCM watercolor outcome:</p>
+        <ul>
+          <li><strong>Hot press:</strong> Smoother surface for crisper edges, more graphic feel</li>
+          <li><strong>Cold press:</strong> More texture, softer edges, forgiving</li>
+          <li><strong>Toned/cream paper:</strong> Instantly evokes vintage MCM feel</li>
+          <li><strong>Heavy weight (300gsm+):</strong> Less buckling, can mask without warping</li>
+        </ul>
+        <div class="pigment-suggestion">
+          <strong>Try this:</strong> Stonehenge Aqua cream, or tint white paper with a pale Yellow Ochre wash before painting for an authentic vintage warmth.
+        </div>
+      </div>
+
+      <div class="technique-card">
+        <h4>⚡ Quick Studies Approach</h4>
+        <p>Loosen up with rapid MCM doodles:</p>
+        <ul>
+          <li>Set a 10-minute timer</li>
+          <li>Limit to 3 colors maximum</li>
+          <li>No pencil sketching — paint directly</li>
+          <li>Fill a page with variations on one theme</li>
+        </ul>
+        <div class="pigment-suggestion">
+          <strong>Study prompt:</strong> One organic shape (boomerang), one geometric (triangle), one texture element (dots). Arrange in 6 different compositions on one page.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN PRINCIPLES SECTION -->
+  <div class="section" id="principles">
+    <h2 class="section-title">MCM Design Principles</h2>
+
+    <div class="guide-grid">
+      <div class="guide-card">
+        <h3><span class="icon">🚀</span> Optimistic Futurism</h3>
+        <p>MCM emerged from post-war optimism and the space age. The aesthetic embodies:</p>
+        <ul>
+          <li><strong>Upward momentum:</strong> Shapes that suggest lift, growth, possibility</li>
+          <li><strong>Clean simplicity:</strong> Form follows function, no excessive ornamentation</li>
+          <li><strong>Atomic influence:</strong> Molecular structures, orbits, starbursts</li>
+          <li><strong>Nature abstracted:</strong> Organic forms simplified to essential curves</li>
+        </ul>
+        <div class="tip-box">
+          <strong>Mood check:</strong> Your composition should feel buoyant and forward-looking, never heavy or cluttered. When in doubt, remove elements.
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <h3><span class="icon">🏠</span> Domestic Modernism</h3>
+        <p>MCM brought modern art into everyday homes:</p>
+        <ul>
+          <li><strong>Accessible abstraction:</strong> Abstract but not alienating</li>
+          <li><strong>Decorative function:</strong> Art that enhances living spaces</li>
+          <li><strong>Warm palette:</strong> Colors that complement wood, textiles, interiors</li>
+          <li><strong>Scalable motifs:</strong> Patterns that work at any size</li>
+        </ul>
+        <p style="margin-top: 12px;">Think: something you'd be happy seeing on your wall every day. Engaging but not exhausting.</p>
+      </div>
+
+      <div class="guide-card">
+        <h3><span class="icon">🔲</span> Tension & Harmony</h3>
+        <p>Successful MCM compositions balance opposing forces:</p>
+        <ul>
+          <li><strong>Organic vs. Geometric:</strong> Curved shapes meet angular ones</li>
+          <li><strong>Warm vs. Cool:</strong> Color temperature contrasts</li>
+          <li><strong>Dense vs. Sparse:</strong> Clustered elements and breathing room</li>
+          <li><strong>Static vs. Dynamic:</strong> Grounded shapes and floating ones</li>
+        </ul>
+        <div class="tip-box">
+          <strong>Exercise:</strong> Start with one dominant quality (e.g., organic). Introduce its opposite (geometric) as a secondary element. Notice how they interact.
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <h3><span class="icon">🎭</span> Key Influences to Study</h3>
+        <p>Artists and designers who defined the MCM aesthetic:</p>
+        <ul>
+          <li><strong>Alexander Calder:</strong> Mobiles, bold shapes, playful balance</li>
+          <li><strong>Charley Harper:</strong> Geometric nature, flat color, minimal detail</li>
+          <li><strong>Mary Blair:</strong> Whimsical color, stylized shapes</li>
+          <li><strong>Eames Office:</strong> Patterns, furniture, multimedia design</li>
+          <li><strong>Saul Bass:</strong> Title sequences, graphic reduction</li>
+        </ul>
+        <p style="margin-top: 12px;">Study how they simplified complex subjects into essential forms and colors.</p>
+      </div>
+
+      <div class="guide-card">
+        <h3><span class="icon">📏</span> Common Proportions</h3>
+        <p>MCM relied on pleasing mathematical relationships:</p>
+        <ul>
+          <li><strong>Golden ratio:</strong> 1:1.618 for shape and spacing</li>
+          <li><strong>Rule of odds:</strong> Groups of 3, 5, 7 feel more dynamic</li>
+          <li><strong>60-30-10:</strong> Dominant, secondary, accent color distribution</li>
+          <li><strong>Varied repetition:</strong> Same shape, different sizes</li>
+        </ul>
+        <div class="tip-box">
+          <strong>Quick proportion tip:</strong> If a shape feels too static, divide it roughly into thirds rather than halves. Asymmetry within order.
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <h3><span class="icon">🎪</span> MCM Sub-styles</h3>
+        <p>Different flavors within the broader movement:</p>
+        <ul>
+          <li><strong>Atomic Age:</strong> Starbursts, orbits, boomerangs, optimistic</li>
+          <li><strong>Scandinavian:</strong> Minimal, natural, muted, functional</li>
+          <li><strong>Googie:</strong> Exuberant, space-age, commercial, dramatic</li>
+          <li><strong>Tiki:</strong> Polynesian fusion, tropical, carved forms</li>
+          <li><strong>Op Art adjacent:</strong> Geometric patterns, visual effects</li>
+        </ul>
+        <p style="margin-top: 12px;">Identify which sub-style resonates with you and lean into its specific characteristics.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Color copied!</div>
+
+  <script>
+    // Color Palettes Data
+    const mcmPalettes = [
+      { name: "Atomic Ranch", description: "Classic suburban warmth", colors: ["#D35400", "#F39C12", "#E8D5B7", "#2C3E50", "#1ABC9C", "#ECF0F1"] },
+      { name: "Desert Sunset", description: "Southwestern influences", colors: ["#C0392B", "#E74C3C", "#F5B041", "#FAD7A0", "#784212", "#F8F1E5"] },
+      { name: "Avocado Kitchen", description: "Retro appliance vibes", colors: ["#6B8E23", "#8B9A46", "#BDB76B", "#F5DEB3", "#8B4513", "#FFF8DC"] },
+      { name: "Tiki Lounge", description: "Polynesian pop culture", colors: ["#FF6B35", "#004E64", "#25A18E", "#9FFFCB", "#7A4419", "#FFE5D9"] },
+      { name: "Scandinavian Modern", description: "Nordic minimalism", colors: ["#2C3E50", "#95A5A6", "#ECF0F1", "#E67E22", "#D4AC0D", "#FDFEFE"] },
+      { name: "Palm Springs", description: "Desert modernism", colors: ["#F06292", "#4DD0E1", "#FFF176", "#E0E0E0", "#FF8A65", "#FFFFFF"] },
+      { name: "Harvest Gold", description: "Warm metallic tones", colors: ["#DAA520", "#CD853F", "#8B7355", "#F5F5DC", "#B8860B", "#FAEBD7"] },
+      { name: "Eames Era", description: "Designer classics", colors: ["#B22222", "#2F4F4F", "#DAA520", "#F5F5F5", "#191970", "#FFFAF0"] },
+      { name: "Seafoam Dreams", description: "Coastal tranquility", colors: ["#66CDAA", "#20B2AA", "#40E0D0", "#F0FFF0", "#2F4F4F", "#FFFAFA"] },
+      { name: "Burnt Sienna", description: "Earthy sophistication", colors: ["#A0522D", "#D2691E", "#DEB887", "#FFF8DC", "#5C4033", "#FAF0E6"] },
+      { name: "Atomic Age", description: "Space race optimism", colors: ["#FF4500", "#FFD700", "#00CED1", "#2F4F4F", "#C0C0C0", "#FFFFF0"] },
+      { name: "Danish Teak", description: "Furniture inspired", colors: ["#8B4513", "#D2691E", "#F5DEB3", "#2F4F4F", "#B8860B", "#FFFAF0"] },
+      { name: "Coral Gables", description: "Tropical elegance", colors: ["#FF7F50", "#FFB6C1", "#98FB98", "#87CEEB", "#DDA0DD", "#FFFAFA"] },
+      { name: "Mustard & Olive", description: "Earth tone classics", colors: ["#FFDB58", "#808000", "#556B2F", "#F5F5DC", "#8B8000", "#FFFFF0"] },
+      { name: "Space Age", description: "Futuristic metallics", colors: ["#708090", "#C0C0C0", "#B8860B", "#2F4F4F", "#FF6347", "#F5F5F5"] },
+      { name: "Boomerang", description: "Googie architecture", colors: ["#00BFFF", "#FF69B4", "#FFD700", "#2F4F4F", "#FF4500", "#FFFAFA"] },
+      { name: "Terrazzo", description: "Flooring patterns", colors: ["#E8D5C4", "#C19A6B", "#708090", "#2F4F4F", "#BC8F8F", "#FAF0E6"] },
+      { name: "Cocktail Hour", description: "Lounge sophistication", colors: ["#2E4057", "#048A81", "#54C6EB", "#F5D547", "#8EE3EF", "#F7F7F7"] },
+      { name: "Sunburst", description: "Radiant wall decor", colors: ["#FF8C00", "#FFD700", "#FFA500", "#FFFACD", "#B8860B", "#FFF8DC"] },
+      { name: "Mod Squad", description: "Bold contrasts", colors: ["#000000", "#FFFFFF", "#FF4500", "#FFD700", "#1E90FF", "#F5F5F5"] }
+    ];
+
+    // Shapes Data
+    const mcmShapes = [
+      { name: "Boomerang", desc: "Curved asymmetric arc", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M20 80 Q10 50 30 30 Q50 10 70 20 Q60 30 55 40 Q50 55 35 70 Q25 80 20 80Z" fill="#D35400"/></svg>` },
+      { name: "Starburst", desc: "Radiating spikes from center", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><polygon points="50,5 54,40 90,50 54,60 50,95 46,60 10,50 46,40" fill="#F39C12"/></svg>` },
+      { name: "Kidney/Amoeba", desc: "Organic blob form", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="35" ry="25" fill="#1ABC9C" transform="rotate(-20 50 50)"/></svg>` },
+      { name: "Atomic Orbit", desc: "Elliptical paths with nucleus", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#2C3E50" stroke-width="2"/><ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#2C3E50" stroke-width="2" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#2C3E50" stroke-width="2" transform="rotate(120 50 50)"/><circle cx="50" cy="50" r="6" fill="#D35400"/></svg>` },
+      { name: "Diamond/Lozenge", desc: "Rotated square, often clustered", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><rect x="30" y="30" width="40" height="40" fill="#E74C3C" transform="rotate(45 50 50)"/></svg>` },
+      { name: "Triangle", desc: "Pointing up = optimism", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><polygon points="50,15 85,80 15,80" fill="#3498DB"/></svg>` },
+      { name: "Circle Cluster", desc: "Overlapping varied circles", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="35" cy="50" r="20" fill="#9B59B6" opacity="0.8"/><circle cx="55" cy="40" r="15" fill="#E74C3C" opacity="0.8"/><circle cx="60" cy="60" r="18" fill="#F39C12" opacity="0.8"/></svg>` },
+      { name: "Tapered Rectangle", desc: "Wedge or trapezoid", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><polygon points="25,75 35,25 65,25 75,75" fill="#16A085"/></svg>` },
+      { name: "Eye/Leaf", desc: "Pointed oval, almond shape", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="38" ry="18" fill="#27AE60"/><circle cx="50" cy="50" r="8" fill="#2C3E50"/></svg>` },
+      { name: "Hairpin Legs", desc: "Thin lines converging", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><line x1="30" y1="20" x2="40" y2="80" stroke="#2C3E50" stroke-width="3"/><line x1="70" y1="20" x2="60" y2="80" stroke="#2C3E50" stroke-width="3"/><line x1="35" y1="20" x2="65" y2="20" stroke="#2C3E50" stroke-width="3"/></svg>` },
+      { name: "Dots/Spheres", desc: "Scattered or grid pattern", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="25" cy="30" r="8" fill="#E74C3C"/><circle cx="50" cy="25" r="6" fill="#F39C12"/><circle cx="75" cy="35" r="7" fill="#3498DB"/><circle cx="30" cy="60" r="5" fill="#9B59B6"/><circle cx="55" cy="55" r="9" fill="#1ABC9C"/><circle cx="70" cy="70" r="6" fill="#E67E22"/></svg>` },
+      { name: "Parabola/Arc", desc: "Single curved sweep", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M15 70 Q50 10 85 70" fill="none" stroke="#D35400" stroke-width="4" stroke-linecap="round"/></svg>` }
+    ];
+
+    // Composition Data
+    const compositions = [
+      { name: "Floating Cluster", desc: "Shapes grouped off-center with generous white space", bg: "#FAF0E6", shapes: [{type: 'circle', x: 60, y: 35, r: 25, fill: '#D35400'}, {type: 'circle', x: 75, y: 55, r: 15, fill: '#F39C12'}, {type: 'rect', x: 45, y: 50, w: 20, h: 20, fill: '#2C3E50', rotate: 45}] },
+      { name: "Diagonal Flow", desc: "Elements arranged along invisible diagonal", bg: "#F5F5DC", shapes: [{type: 'circle', x: 20, y: 75, r: 18, fill: '#1ABC9C'}, {type: 'rect', x: 40, y: 45, w: 25, h: 15, fill: '#E74C3C', rotate: -15}, {type: 'circle', x: 70, y: 25, r: 12, fill: '#3498DB'}] },
+      { name: "Grounded + Float", desc: "Heavy base element with lighter floating shapes", bg: "#FFFAF0", shapes: [{type: 'rect', x: 20, y: 70, w: 60, h: 15, fill: '#2C3E50', rotate: 0}, {type: 'circle', x: 35, y: 35, r: 12, fill: '#F39C12'}, {type: 'circle', x: 60, y: 45, r: 8, fill: '#D35400'}] },
+      { name: "Radial Scatter", desc: "Elements radiating from implied center point", bg: "#F0FFF0", shapes: [{type: 'circle', x: 50, y: 50, r: 10, fill: '#E74C3C'}, {type: 'circle', x: 30, y: 30, r: 8, fill: '#3498DB'}, {type: 'circle', x: 70, y: 35, r: 6, fill: '#F39C12'}, {type: 'circle', x: 25, y: 60, r: 7, fill: '#9B59B6'}, {type: 'circle', x: 75, y: 65, r: 9, fill: '#1ABC9C'}] }
+    ];
+
+    let currentColorCount = 4;
+
+    // DOM Elements
+    const palettesGrid = document.getElementById('palettesGrid');
+    const colorCountInput = document.getElementById('colorCount');
+    const colorCountValue = document.getElementById('colorCountValue');
+    const toast = document.getElementById('toast');
+    const navTabs = document.querySelectorAll('.nav-tab');
+    const sections = document.querySelectorAll('.section');
+
+    // Tab Navigation
+    navTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const sectionId = tab.dataset.section;
+        
+        navTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        sections.forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+      });
+    });
+
+    // Render Palettes
+    function renderPalettes() {
+      palettesGrid.innerHTML = '';
+      
+      mcmPalettes.forEach(palette => {
+        const displayColors = palette.colors.slice(0, currentColorCount);
+        
+        const paletteEl = document.createElement('div');
+        paletteEl.className = 'palette';
+        
+        const colorsHtml = displayColors.map(color => 
+          `<div class="color-swatch" style="background-color: ${color}" data-hex="${color}" onclick="copyColor('${color}')"></div>`
+        ).join('');
+        
+        paletteEl.innerHTML = `
+          <div class="palette-colors">${colorsHtml}</div>
+          <div class="palette-info">
+            <div class="palette-name">${palette.name}</div>
+            <div class="palette-description">${palette.description}</div>
+          </div>
+        `;
+        
+        palettesGrid.appendChild(paletteEl);
+      });
+    }
+
+    // Render Shapes
+    function renderShapes() {
+      const shapesGrid = document.getElementById('shapesGrid');
+      shapesGrid.innerHTML = mcmShapes.map(shape => `
+        <div class="shape-card">
+          <div class="shape-preview">${shape.svg}</div>
+          <div class="shape-name">${shape.name}</div>
+          <div class="shape-desc">${shape.desc}</div>
+        </div>
+      `).join('');
+    }
+
+    // Render Compositions
+    function renderCompositions() {
+      const compGrid = document.getElementById('compositionGrid');
+      compGrid.innerHTML = compositions.map(comp => {
+        let shapesHtml = comp.shapes.map(s => {
+          if (s.type === 'circle') {
+            return `<circle cx="${s.x}%" cy="${s.y}%" r="${s.r}" fill="${s.fill}"/>`;
+          } else if (s.type === 'rect') {
+            return `<rect x="${s.x}%" y="${s.y}%" width="${s.w}" height="${s.h}" fill="${s.fill}" transform="rotate(${s.rotate || 0} ${s.x + s.w/2} ${s.y + s.h/2})"/>`;
+          }
+        }).join('');
+        
+        return `
+          <div class="comp-example">
+            <div class="comp-preview" style="background: ${comp.bg}">
+              <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">${shapesHtml}</svg>
+            </div>
+            <div class="comp-info">
+              <div class="comp-name">${comp.name}</div>
+              <div class="comp-desc">${comp.desc}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Copy Color
+    function copyColor(hex) {
+      navigator.clipboard.writeText(hex).then(() => {
+        toast.textContent = `${hex} copied!`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+
+    // Event Listeners
+    colorCountInput.addEventListener('input', (e) => {
+      currentColorCount = parseInt(e.target.value);
+      colorCountValue.textContent = currentColorCount;
+      renderPalettes();
+    });
+
+    // Initialize
+    renderPalettes();
+    renderShapes();
+    renderCompositions();
+  </script>
+</body>
+</html>
