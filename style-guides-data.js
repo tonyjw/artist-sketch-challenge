@@ -84,5 +84,47 @@ const styleGuidesData = {
       { name: "Heaven-Earth-Man", desc: "Triadic balance with three focal points", bg: "#F8F8F8", shapes: [{type: 'circle', x: 50, y: 20, r: 8, fill: '#90A4AE'}, {type: 'rect', x: 28, y: 65, w: 12, h: 20, fill: '#6D4C41', rotate: 0}, {type: 'circle', x: 70, y: 50, r: 12, fill: '#424242'}] },
       { name: "Ma (Emptiness)", desc: "Minimal elements, maximum negative space", bg: "#FFFFFF", shapes: [{type: 'circle', x: 75, y: 30, r: 6, fill: '#000000'}, {type: 'rect', x: 73, y: 38, w: 1, h: 25, fill: '#2E7D32', rotate: 5}] }
     ]
+  },
+
+  'botanical-illustration': {
+    title: "Botanical Illustration",
+    subtitle: "Scientific Accuracy Meets Artistic Beauty for Watercolorists",
+    palettes: [
+      { name: "Foliage Greens", description: "Complete green spectrum", colors: ["#9ACD32", "#7CB342", "#558B2F", "#388E3C", "#2E7D32", "#1B5E20"] },
+      { name: "Garden Roses", description: "Classic rose colors", colors: ["#F8BBD0", "#F06292", "#EC407A", "#C2185B", "#FFF59D", "#FFECB3"] },
+      { name: "Wildflower Meadow", description: "Mixed field flowers", colors: ["#7B1FA2", "#9C27B0", "#FFD54F", "#FFC107", "#FF6F00", "#FFFFFF"] },
+      { name: "Succulent Garden", description: "Dusty blue-greens", colors: ["#80CBC4", "#4DB6AC", "#26A69A", "#F48FB1", "#CE93D8", "#B0BEC5"] },
+      { name: "Autumn Botanicals", description: "Fall foliage tones", colors: ["#8D6E63", "#A1887F", "#BF360C", "#D84315", "#F57C00", "#FBC02D"] },
+      { name: "Spring Blossoms", description: "Soft spring colors", colors: ["#F8BBD0", "#F3E5F5", "#E1F5FE", "#C8E6C9", "#FFF9C4", "#FFFFFF"] },
+      { name: "Tropical Palette", description: "Vibrant jungle colors", colors: ["#D32F2F", "#E64A19", "#F57C00", "#1B5E20", "#004D40", "#006064"] },
+      { name: "Herb Garden", description: "Silvery and muted", colors: ["#9E9E9E", "#90A4AE", "#78909C", "#7E57C2", "#FFF59D", "#DCEDC8"] },
+      { name: "Vintage Herbarium", description: "Aged botanical tones", colors: ["#8D6E63", "#A1887F", "#BCAAA4", "#D7CCC8", "#6D4C41", "#F5F5DC"] },
+      { name: "Forest Floor", description: "Earthy woodland colors", colors: ["#4E342E", "#5D4037", "#6D4C41", "#558B2F", "#7CB342", "#BCAAA4"] },
+      { name: "Citrus Bright", description: "Lemon, orange, lime", colors: ["#F9FBE7", "#F4FF81", "#FFEB3B", "#FF9800", "#FF6F00", "#7CB342"] },
+      { name: "Berry Tones", description: "Deep fruit colors", colors: ["#4A148C", "#6A1B9A", "#880E4F", "#C2185B", "#AD1457", "#F8BBD0"] },
+      { name: "Lavender Fields", description: "Purple and sage", colors: ["#7E57C2", "#9575CD", "#B39DDB", "#D1C4E9", "#9E9E9E", "#E8EAF6"] },
+      { name: "Desert Blooms", description: "Cactus flowers", colors: ["#FF6F00", "#FF8F00", "#FFA000", "#F06292", "#EC407A", "#69F0AE"] },
+      { name: "Woodland Mushrooms", description: "Fungi and forest", colors: ["#8D6E63", "#A1887F", "#FFCCBC", "#FF8A65", "#6D4C41", "#D7CCC8"] }
+    ],
+    shapes: [
+      { name: "Simple Leaf", desc: "Ovate with midrib", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="18" ry="30" fill="#43A047"/><line x1="50" y1="20" x2="50" y2="80" stroke="#2E7D32" stroke-width="1.5"/></svg>` },
+      { name: "Serrated Leaf", desc: "Toothed edges", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M50 20 L55 30 L53 35 L58 40 L55 45 L60 50 L55 55 L58 60 L53 65 L55 70 L50 80 L45 70 L47 65 L42 60 L45 55 L40 50 L45 45 L42 40 L47 35 L45 30 Z" fill="#558B2F"/><line x1="50" y1="20" x2="50" y2="80" stroke="#33691E" stroke-width="1"/></svg>` },
+      { name: "Compound Leaf", desc: "Multiple leaflets", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="25" rx="8" ry="12" fill="#66BB6A"/><ellipse cx="40" cy="45" rx="8" ry="12" fill="#66BB6A"/><ellipse cx="60" cy="45" rx="8" ry="12" fill="#66BB6A"/><ellipse cx="35" cy="65" rx="8" ry="12" fill="#66BB6A"/><ellipse cx="65" cy="65" rx="8" ry="12" fill="#66BB6A"/><line x1="50" y1="25" x2="50" y2="75" stroke="#2E7D32" stroke-width="2"/></svg>` },
+      { name: "Five-Petal Flower", desc: "Simple blossom", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="40" r="10" fill="#F06292"/><circle cx="35" cy="50" r="10" fill="#F06292"/><circle cx="50" cy="65" r="10" fill="#F06292"/><circle cx="65" cy="50" r="10" fill="#F06292"/><circle cx="50" cy="50" r="10" fill="#F06292"/><circle cx="50" cy="50" r="5" fill="#FBC02D"/></svg>` },
+      { name: "Bell Flower", desc: "Drooping tubular bloom", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M50 30 Q40 40 45 55 L55 55 Q60 40 50 30 Z" fill="#7E57C2" opacity="0.8"/><line x1="50" y1="20" x2="50" y2="30" stroke="#558B2F" stroke-width="2"/></svg>` },
+      { name: "Daisy", desc: "White petals, yellow center", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="35" rx="5" ry="12" fill="#FFFFFF" stroke="#E0E0E0"/><ellipse cx="35" cy="50" rx="12" ry="5" fill="#FFFFFF" stroke="#E0E0E0"/><ellipse cx="50" cy="65" rx="5" ry="12" fill="#FFFFFF" stroke="#E0E0E0"/><ellipse cx="65" cy="50" rx="12" ry="5" fill="#FFFFFF" stroke="#E0E0E0"/><circle cx="50" cy="50" r="8" fill="#FDD835"/></svg>` },
+      { name: "Rose Hip", desc: "Seed pod structure", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="12" ry="15" fill="#D32F2F"/><path d="M50 35 L48 30 L52 30 Z" fill="#558B2F"/></svg>` },
+      { name: "Fern Frond", desc: "Pinnate leaf pattern", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><line x1="50" y1="20" x2="50" y2="80" stroke="#2E7D32" stroke-width="2"/><path d="M50 30 Q40 30 38 35" fill="none" stroke="#43A047" stroke-width="1.5"/><path d="M50 30 Q60 30 62 35" fill="none" stroke="#43A047" stroke-width="1.5"/><path d="M50 45 Q40 45 38 50" fill="none" stroke="#43A047" stroke-width="1.5"/><path d="M50 45 Q60 45 62 50" fill="none" stroke="#43A047" stroke-width="1.5"/><path d="M50 60 Q40 60 38 65" fill="none" stroke="#43A047" stroke-width="1.5"/><path d="M50 60 Q60 60 62 65" fill="none" stroke="#43A047" stroke-width="1.5"/></svg>` },
+      { name: "Succulent Rosette", desc: "Layered symmetry", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="6" ry="12" fill="#4DB6AC" transform="rotate(0 50 50)"/><ellipse cx="50" cy="50" rx="6" ry="12" fill="#26A69A" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="6" ry="12" fill="#4DB6AC" transform="rotate(120 50 50)"/><ellipse cx="50" cy="50" rx="6" ry="12" fill="#26A69A" transform="rotate(180 50 50)"/><ellipse cx="50" cy="50" rx="6" ry="12" fill="#4DB6AC" transform="rotate(240 50 50)"/><ellipse cx="50" cy="50" rx="6" ry="12" fill="#26A69A" transform="rotate(300 50 50)"/></svg>` },
+      { name: "Seed Pod", desc: "Elongated capsule", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="8" ry="25" fill="#8D6E63"/><line x1="50" y1="25" x2="50" y2="75" stroke="#5D4037" stroke-width="1"/></svg>` },
+      { name: "Berry Cluster", desc: "Grouped fruits", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><circle cx="45" cy="45" r="6" fill="#C2185B"/><circle cx="55" cy="42" r="6" fill="#AD1457"/><circle cx="50" cy="53" r="6" fill="#C2185B"/><circle cx="60" cy="50" r="5" fill="#880E4F"/><line x1="50" y1="35" x2="50" y2="20" stroke="#558B2F" stroke-width="2"/></svg>` },
+      { name: "Vine Tendril", desc: "Curling climbing structure", svg: `<svg width="90" height="90" viewBox="0 0 100 100"><path d="M30 30 Q40 35 45 45 Q50 55 58 60 Q65 65 70 70" fill="none" stroke="#558B2F" stroke-width="2"/><path d="M55 50 Q60 45 68 45" fill="none" stroke="#7CB342" stroke-width="1.5"/></svg>` }
+    ],
+    compositions: [
+      { name: "Single Specimen", desc: "One plant centered with botanical details", bg: "#FFFFFF", shapes: [{type: 'circle', x: 50, y: 50, r: 8, fill: '#E91E63'}, {type: 'rect', x: 49, y: 60, w: 2, h: 25, fill: '#558B2F', rotate: 0}] },
+      { name: "Branch Study", desc: "Flowering branch diagonally placed", bg: "#FAFAFA", shapes: [{type: 'circle', x: 35, y: 40, r: 5, fill: '#F06292'}, {type: 'circle', x: 55, y: 50, r: 6, fill: '#F06292'}, {type: 'circle', x: 65, y: 35, r: 5, fill: '#F8BBD0'}, {type: 'rect', x: 28, y: 45, w: 40, h: 2, fill: '#6D4C41', rotate: -25}] },
+      { name: "Life Cycle", desc: "Bud to bloom to seed progression", bg: "#F5F5F5", shapes: [{type: 'circle', x: 25, y: 50, r: 4, fill: '#9E9E9E'}, {type: 'circle', x: 50, y: 50, r: 8, fill: '#EC407A'}, {type: 'circle', x: 75, y: 50, r: 5, fill: '#8D6E63'}] },
+      { name: "Botanical Plate", desc: "Multiple views - whole plant, detail, cross-section", bg: "#FFFFFF", shapes: [{type: 'circle', x: 30, y: 40, r: 12, fill: '#66BB6A'}, {type: 'circle', x: 70, y: 35, r: 6, fill: '#F06292'}, {type: 'rect', x: 60, y: 60, w: 20, h: 15, fill: '#E8D5B7', rotate: 0}] }
+    ]
   }
 };
