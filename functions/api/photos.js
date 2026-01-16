@@ -55,10 +55,12 @@ export async function onRequest(context) {
       );
     }
 
-    // Make request to Unsplash API random photos endpoint
-    // Using random endpoint to get different photos on each load
-    const count = Math.min(parseInt(perPage), 30); // Unsplash API max is 30
-    const unsplashUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(query)}&count=${count}`;
+    // Make request to Unsplash API search endpoint for proper pagination
+    // Using search endpoint to get unique photos across pages without repeats
+    const pageNum = parseInt(page);
+    const perPageNum = Math.min(parseInt(perPage), 30); // Unsplash API max per_page is 30
+    const unsplashUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&page=${pageNum}&per_page=${perPageNum}&order_by=latest`;
+
     const response = await fetch(unsplashUrl, {
       headers: {
         'Authorization': `Client-ID ${apiKey}`,
@@ -73,12 +75,11 @@ export async function onRequest(context) {
 
     const data = await response.json();
 
-    // Random endpoint returns an array directly, but we need to match search API format
-    // Wrap in results object to maintain compatibility with existing frontend code
+    // Search endpoint returns data with results array
     const formattedData = {
-      results: Array.isArray(data) ? data : [data],
-      total: Array.isArray(data) ? data.length : 1,
-      total_pages: 1
+      results: data.results || [],
+      total: data.total || 0,
+      total_pages: data.total_pages || 1
     };
 
     return new Response(JSON.stringify(formattedData), {

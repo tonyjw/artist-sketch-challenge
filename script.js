@@ -1,10 +1,13 @@
 // API configuration
 const apiUrl = '/api/photos'; // Use server endpoint
 const perPage = 10;
+const maxPages = 10; // Support 10 cycles of 10 images (100 total)
 
 // Initialize variables
 let currentImageIndex = 0;
 let images = [];
+let currentPage = 1;
+let isLoadingNextPage = false;
 let rotationInterval = parseInt(localStorage.getItem('rotationInterval')) || 30; // Load saved interval or use default
 let intervalId = null;
 let progressIntervalId = null;
@@ -69,7 +72,7 @@ async function loadImages() {
   try {
     const query = themeSelect.value;
     const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}&per_page=${perPage}`);
-    
+
     if (!response.ok) {
       const error = await response.json();
       if (error.error === 'API key not configured') {
@@ -77,23 +80,72 @@ async function loadImages() {
       }
       throw new Error('Failed to load images');
     }
-    
+
     const data = await response.json();
 
     if (!data.results || !Array.isArray(data.results)) {
       console.error('Invalid response format:', data);
       throw new Error('Invalid response format from server');
     }
-    
+
     images = data.results;
     currentImageIndex = 0;
-    
+    currentPage = 1; // Reset pagination state
+    isLoadingNextPage = false;
+
     if (images.length > 0) {
       displayImage();
     }
   } catch (error) {
     console.error('Error loading images:', error);
     showError(error.message);
+  }
+}
+
+// Load next page of images and append to existing images array
+async function loadNextPage() {
+  // Prevent multiple simultaneous loads
+  if (isLoadingNextPage) return;
+
+  // Check if we've reached max pages
+  if (currentPage >= maxPages) return;
+
+  try {
+    isLoadingNextPage = true;
+    const query = themeSelect.value;
+    const nextPage = currentPage + 1;
+
+    const response = await fetch(`${apiUrl}?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${nextPage}`);
+
+    if (!response.ok) {
+      throw new Error('Failed to load next page');
+    }
+
+    const data = await response.json();
+
+    if (!data.results || !Array.isArray(data.results)) {
+      console.error('Invalid response format:', data);
+      throw new Error('Invalid response format from server');
+    }
+
+    // Append new images to existing array
+    const startIndex = images.length;
+    images = images.concat(data.results);
+    currentPage = nextPage;
+
+    // Create DOM elements for new images
+    data.results.forEach((photo, index) => {
+      const img = document.createElement('img');
+      img.alt = `Gallery image ${startIndex + index + 1}`;
+      imageContainer.appendChild(img);
+    });
+
+    console.log(`Loaded page ${currentPage}/${maxPages}, total images: ${images.length}`);
+  } catch (error) {
+    console.error('Error loading next page:', error);
+    // Don't show error to user for background pagination failures
+  } finally {
+    isLoadingNextPage = false;
   }
 }
 
@@ -271,15 +323,35 @@ function startRotation() {
 }
 
 // Rotate to the next image
-function rotateImage() {
+async function rotateImage() {
     const imgElements = document.querySelectorAll('.image-container img');
     if (imgElements.length === 0) return;
+
+    // Check if we need to load next page (when 2 images away from current end)
+    const imagesUntilEnd = imgElements.length - currentImageIndex;
+    if (imagesUntilEnd <= 3 && currentPage < maxPages && !isLoadingNextPage) {
+        // Prefetch next page in background
+        loadNextPage();
+    }
+
+    // Stop if we're at the last image and no more pages to load
+    if (currentImageIndex >= imgElements.length - 1 && currentPage >= maxPages) {
+        // Clear intervals to stop rotation
+        if (intervalId) clearInterval(intervalId);
+        if (progressIntervalId) clearInterval(progressIntervalId);
+        return;
+    }
+
+    // If at the end of current batch but more pages available, wait for load
+    if (currentImageIndex >= imgElements.length - 1 && isLoadingNextPage) {
+        return; // Skip this rotation cycle, next page is loading
+    }
 
     // Remove active class from current image
     imgElements[currentImageIndex].classList.remove('active');
 
     // Update current index
-    currentImageIndex = (currentImageIndex + 1) % imgElements.length;
+    currentImageIndex = currentImageIndex + 1;
 
     // Add active class to new image
     imgElements[currentImageIndex].classList.add('active');
@@ -289,10 +361,12 @@ function rotateImage() {
         imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
     }
 
-    // Preload next image
-    const nextIndex = (currentImageIndex + 1) % imgElements.length;
-    if (!imgElements[nextIndex].src) {
-        imgElements[nextIndex].src = images[nextIndex].urls.regular;
+    // Preload next image if not at the end
+    if (currentImageIndex < imgElements.length - 1) {
+        const nextIndex = currentImageIndex + 1;
+        if (!imgElements[nextIndex].src) {
+            imgElements[nextIndex].src = images[nextIndex].urls.regular;
+        }
     }
 
     // Update photo attribution
@@ -327,15 +401,32 @@ function resetProgressBar() {
 }
 
 // Navigate to next image
-function nextImage() {
+async function nextImage() {
     const imgElements = document.querySelectorAll('.image-container img');
     if (imgElements.length === 0) return;
+
+    // Check if we need to load next page (when 2 images away from current end)
+    const imagesUntilEnd = imgElements.length - currentImageIndex;
+    if (imagesUntilEnd <= 3 && currentPage < maxPages && !isLoadingNextPage) {
+        // Prefetch next page in background
+        loadNextPage();
+    }
+
+    // Don't go forward if we're at the last image and no more pages to load
+    if (currentImageIndex >= imgElements.length - 1 && currentPage >= maxPages) return;
+
+    // If at the end of current batch but more pages available, wait briefly for load
+    if (currentImageIndex >= imgElements.length - 1 && isLoadingNextPage) {
+        // Wait a bit for the page to load, then retry
+        setTimeout(() => nextImage(), 100);
+        return;
+    }
 
     // Remove active class from current image
     imgElements[currentImageIndex].classList.remove('active');
 
     // Move to next image
-    currentImageIndex = (currentImageIndex + 1) % imgElements.length;
+    currentImageIndex = currentImageIndex + 1;
 
     // Add active class to new image
     imgElements[currentImageIndex].classList.add('active');
@@ -345,10 +436,12 @@ function nextImage() {
         imgElements[currentImageIndex].src = images[currentImageIndex].urls.regular;
     }
 
-    // Preload next image
-    const nextIndex = (currentImageIndex + 1) % imgElements.length;
-    if (!imgElements[nextIndex].src) {
-        imgElements[nextIndex].src = images[nextIndex].urls.regular;
+    // Preload next image if not at the end
+    if (currentImageIndex < imgElements.length - 1) {
+        const nextIndex = currentImageIndex + 1;
+        if (!imgElements[nextIndex].src) {
+            imgElements[nextIndex].src = images[nextIndex].urls.regular;
+        }
     }
 
     // Update photo attribution
