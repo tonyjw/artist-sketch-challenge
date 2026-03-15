@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Value Study Tool</title>
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+
+        .home-link:hover {
+            color: #fff;
+        }
+
+        .controls-bar {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-group label {
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .control-group input[type="range"] {
+            width: 120px;
+            cursor: pointer;
+        }
+
+        .control-group .value-display {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .drop-zone {
+            background: rgba(0, 0, 0, 0.3);
+            border: 3px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .drop-zone.has-image {
+            display: none;
+        }
+
+        .drop-zone h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .drop-zone p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .drop-zone .methods {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .canvas-container {
+            display: none;
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .canvas-container.visible {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #outputCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .value-legend {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .value-swatch {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .reset-btn {
+            margin-top: 15px;
+            align-self: center;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.4em;
+            }
+
+            .controls-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .control-group {
+                justify-content: space-between;
+            }
+
+            .button-group {
+                justify-content: center;
+            }
+
+            .drop-zone {
+                padding: 40px 20px;
+            }
+
+            .drop-zone h2 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            header,
+            .controls-bar,
+            .drop-zone,
+            .reset-btn,
+            .value-legend {
+                display: none !important;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .canvas-container {
+                background: none;
+                padding: 0;
+            }
+
+            #outputCanvas {
+                max-width: 100%;
+                max-height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Value Study Tool</h1>
+            <a href="index.html" class="home-link">Back to Tools</a>
+        </header>
+
+        <div class="controls-bar">
+            <div class="control-group">
+                <label for="valueCount">Values:</label>
+                <input type="range" id="valueCount" min="2" max="10" value="5">
+                <span class="value-display" id="valueDisplay">5</span>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" id="uploadBtn">
+                    Upload Image
+                </button>
+                <button class="btn btn-secondary" id="pasteBtn">
+                    Paste from Clipboard
+                </button>
+                <button class="btn btn-secondary" id="downloadBtn" disabled>
+                    Download
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="drop-zone" id="dropZone">
+                <h2>Drop an image here</h2>
+                <p>or use the buttons above to upload or paste</p>
+                <div class="methods">
+                    <span>Drag & Drop</span>
+                    <span>|</span>
+                    <span>Upload</span>
+                    <span>|</span>
+                    <span>Paste</span>
+                    <span>|</span>
+                    <span>Share from Safari</span>
+                </div>
+            </div>
+
+            <div class="canvas-container" id="canvasContainer">
+                <div class="canvas-wrapper">
+                    <canvas id="outputCanvas"></canvas>
+                </div>
+                <div class="value-legend" id="valueLegend"></div>
+                <button class="btn btn-secondary reset-btn" id="resetBtn">
+                    Load New Image
+                </button>
+            </div>
+        </div>
+
+        <input type="file" id="fileInput" accept="image/*">
+    </div>
+
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('Service Worker registered:', registration.scope);
+                })
+                .catch(error => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
+
+        // DOM elements
+        const dropZone = document.getElementById('dropZone');
+        const canvasContainer = document.getElementById('canvasContainer');
+        const outputCanvas = document.getElementById('outputCanvas');
+        const valueCount = document.getElementById('valueCount');
+        const valueDisplay = document.getElementById('valueDisplay');
+        const valueLegend = document.getElementById('valueLegend');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const pasteBtn = document.getElementById('pasteBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const fileInput = document.getElementById('fileInput');
+        const ctx = outputCanvas.getContext('2d');
+
+        let currentImage = null;
+
+        // Initialize
+        init();
+
+        function init() {
+            setupEventListeners();
+            checkForSharedImage();
+        }
+
+        function setupEventListeners() {
+            // Value slider
+            valueCount.addEventListener('input', () => {
+                valueDisplay.textContent = valueCount.value;
+                if (currentImage) {
+                    processImage(currentImage);
+                }
+            });
+
+            // Upload button
+            uploadBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+
+            // Paste button
+            pasteBtn.addEventListener('click', handlePaste);
+
+            // Download button
+            downloadBtn.addEventListener('click', handleDownload);
+
+            // Reset button
+            resetBtn.addEventListener('click', resetToDropZone);
+
+            // Drop zone
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', handleDragOver);
+            dropZone.addEventListener('dragleave', handleDragLeave);
+            dropZone.addEventListener('drop', handleDrop);
+
+            // Global paste
+            document.addEventListener('paste', handlePasteEvent);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                loadImageFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                loadImageFile(file);
+            }
+        }
+
+        async function handlePaste() {
+            try {
+                const clipboardItems = await navigator.clipboard.read();
+                for (const item of clipboardItems) {
+                    for (const type of item.types) {
+                        if (type.startsWith('image/')) {
+                            const blob = await item.getType(type);
+                            loadImageFile(blob);
+                            return;
+                        }
+                    }
+                }
+                alert('No image found in clipboard');
+            } catch (err) {
+                alert('Could not access clipboard. Try using Ctrl/Cmd+V instead.');
+            }
+        }
+
+        function handlePasteEvent(e) {
+            const items = e.clipboardData.items;
+            for (const item of items) {
+                if (item.type.startsWith('image/')) {
+                    const file = item.getAsFile();
+                    loadImageFile(file);
+                    return;
+                }
+            }
+        }
+
+        function loadImageFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    currentImage = img;
+                    showCanvas();
+                    processImage(img);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showCanvas() {
+            dropZone.classList.add('has-image');
+            canvasContainer.classList.add('visible');
+            downloadBtn.disabled = false;
+        }
+
+        function resetToDropZone() {
+            dropZone.classList.remove('has-image');
+            canvasContainer.classList.remove('visible');
+            downloadBtn.disabled = true;
+            currentImage = null;
+            fileInput.value = '';
+        }
+
+        function processImage(img) {
+            const numValues = parseInt(valueCount.value);
+
+            // Set canvas size to match image
+            const maxWidth = Math.min(img.width, 1200);
+            const scale = maxWidth / img.width;
+            const width = Math.floor(img.width * scale);
+            const height = Math.floor(img.height * scale);
+
+            outputCanvas.width = width;
+            outputCanvas.height = height;
+
+            // Draw original image
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Get image data
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const data = imageData.data;
+
+            // Process each pixel
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+
+                // Convert to grayscale using luminance formula
+                const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+
+                // Quantize to N levels
+                const quantized = Math.round(gray / 255 * (numValues - 1)) * (255 / (numValues - 1));
+
+                // Set grayscale value
+                data[i] = quantized;
+                data[i + 1] = quantized;
+                data[i + 2] = quantized;
+            }
+
+            // Put processed image back
+            ctx.putImageData(imageData, 0, 0);
+
+            // Update legend
+            updateLegend(numValues);
+        }
+
+        function updateLegend(numValues) {
+            valueLegend.innerHTML = '';
+
+            for (let i = 0; i < numValues; i++) {
+                const value = Math.round(i * (255 / (numValues - 1)));
+                const swatch = document.createElement('div');
+                swatch.className = 'value-swatch';
+                swatch.style.backgroundColor = `rgb(${value}, ${value}, ${value})`;
+                swatch.title = `Value ${i + 1}: ${Math.round(value / 255 * 100)}%`;
+                valueLegend.appendChild(swatch);
+            }
+        }
+
+        function handleDownload() {
+            const link = document.createElement('a');
+            link.download = `value-study-${valueCount.value}-values.png`;
+            link.href = outputCanvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Check for shared image from Safari
+        async function checkForSharedImage() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('shared') === 'true') {
+                // Clear the URL parameter
+                window.history.replaceState({}, '', window.location.pathname);
+
+                // Try to load the shared image from IndexedDB
+                try {
+                    const sharedImage = await getSharedImage();
+                    if (sharedImage) {
+                        const blob = new Blob([sharedImage.data], { type: sharedImage.type });
+                        loadImageFile(blob);
+                    }
+                } catch (err) {
+                    console.error('Failed to load shared image:', err);
+                }
+            }
+        }
+
+        async function getSharedImage() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('WatercolorToolsDB', 1);
+
+                request.onerror = () => reject(request.error);
+
+                request.onsuccess = () => {
+                    const db = request.result;
+                    const tx = db.transaction('sharedImages', 'readonly');
+                    const store = tx.objectStore('sharedImages');
+                    const getRequest = store.get('lastShared');
+
+                    getRequest.onsuccess = () => {
+                        resolve(getRequest.result);
+                    };
+
+                    getRequest.onerror = () => {
+                        reject(getRequest.error);
+                    };
+                };
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains('sharedImages')) {
+                        db.createObjectStore('sharedImages', { keyPath: 'id' });
+                    }
+                };
+            });
+        }
+    </script>
+</body>
+</html>

@@ -369,10 +369,10 @@ body {
 
 .tools-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
     margin-top: 40px;
-    max-width: 1400px;
+    max-width: 1600px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -468,7 +468,14 @@ body {
     color: rgba(255, 255, 255, 1);
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 900px) {
     .tools-grid {
         grid-template-columns: 1fr;
         gap: 20px;
