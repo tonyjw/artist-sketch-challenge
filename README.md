@@ -1,10 +1,26 @@
-# Artist Sketch Challenge
+# Watercolor Tools
 
-Do you want to get better at urban sketching? Need some inspiration for painting or drawing?
+A collection of tools to help you practice and improve your watercolor painting skills.
 
-Use the Artist Sketch Challenge to practice your skills with a little artistic pressure - you have only 30 seconds to draw what you see before moving on.  
+## Tools
 
-We've pre-selected an assortment of artistic themes to show you, including "Quaint Streets", "Nature Close-ups" and more.
+### Artist Sketch Challenge
+Practice your skills with a little artistic pressure - you have only 30 seconds to draw what you see before moving on. Features curated artistic themes including "Quaint Streets", "Nature Close-ups" and more.
+
+### Mixing Chart Template
+Create printable color mixing charts to learn how your watercolors interact and build a personal reference library.
+
+### Design Style Guides
+Explore various art and design movements with comprehensive guides for watercolor artists, from Mid-Century Modern to Japanese Sumi-e and beyond.
+
+### Value Study Tool
+Analyze reference images for light and dark values to plan your paintings. Simplify complex images into 2-10 value levels for better understanding of tonal structure.
+
+**Value Study Features:**
+- Posterize images to 2-10 customizable value levels
+- Share directly from Safari on iOS (PWA share target)
+- Upload, paste from clipboard, or drag and drop images
+- Download processed images for reference
 
 ## Features
 
@@ -17,6 +33,7 @@ We've pre-selected an assortment of artistic themes to show you, including "Quai
 - Secure API key handling with environment variables
 - Cloudflare Pages Functions for serverless API
 - Paginated image loading (up to 100 images per theme)
+- Progressive Web App (PWA) with Safari share sheet integration
 
 ## Prerequisites
 
@@ -146,19 +163,28 @@ npm run deploy
 
 ```
 .
-├── functions/           # Cloudflare Pages Functions
+├── functions/                      # Cloudflare Pages Functions
 │   └── api/
-│       └── photos.js    # API endpoint for Unsplash photos
-├── index.html           # Main HTML file
-├── styles.css           # CSS styles
-├── script.js            # JavaScript application code
-├── themes.json          # Theme configuration
-├── package.json         # Dependencies and scripts
-├── wrangler.toml        # Cloudflare Wrangler configuration
-├── .dev.vars.sample     # Sample environment variables (copy to .dev.vars)
-├── .dev.vars            # Local environment variables (git-ignored)
-├── .gitignore           # Git ignore rules
-└── README.md            # This file
+│       └── photos.js               # API endpoint for Unsplash photos
+├── public/
+│   └── favicon.svg                 # Site icon
+├── index.html                      # Landing page with tool cards
+├── gallery.html                    # Artist Sketch Challenge
+├── watercolor-mixing-chart.html    # Mixing Chart Template
+├── design-style-guides.html        # Design Style Guides
+├── value-study.html                # Value Study Tool
+├── styles.css                      # CSS styles
+├── script.js                       # Gallery JavaScript code
+├── style-guides-data.js            # Design guides data
+├── themes.json                     # Theme configuration
+├── manifest.json                   # PWA manifest
+├── sw.js                           # Service worker for PWA
+├── package.json                    # Dependencies and scripts
+├── wrangler.toml                   # Cloudflare Wrangler configuration
+├── .dev.vars.sample                # Sample environment variables
+├── .dev.vars                       # Local environment variables (git-ignored)
+├── .gitignore                      # Git ignore rules
+└── README.md                       # This file
 ```
 
 ## Adding New Themes
